@@ -10,9 +10,9 @@ public class UniqueSymbolGeneratorTest {
 	public void SymbolGeneratorTester() {
 		UniqueSymbolGenerator tester = new UniqueSymbolGenerator();
 		
-		for (int i=0;i<5;i++) {
-			
-			assertEquals("Testing symbol generator: ","_"+i,tester.SymbolGenerator());
+		for (int i=1;i<=5;i++) {
+			tester.Generate();
+			assertEquals("Testing symbol generator: ","_Var"+i,tester.SymbolGen());
 			
 		}
 		
