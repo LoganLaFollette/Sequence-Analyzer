@@ -19,7 +19,7 @@ public class PredefinedFunctions {
 			//find first disagreement, keeping track of the number of 1's
 			//encountered before the disagreement for the original string
 			
-			//TODO:maybe find a way to keep track of the 1's we have already counted
+			//TODO: find a way to keep track of the 1's we have already counted
 			int sCounter = 0;			
 			for (int j=0; j<subS.length(); j++) {
 				
@@ -27,7 +27,7 @@ public class PredefinedFunctions {
 				int subCompare = Character.getNumericValue(subS.charAt(j));
 				
 				//if there is a disagreement, store the value of the substring at the disagreement
-				//and break the loop, otherwise increment otherwise increment the 1's counter
+				//and break the loop, otherwise increment the 1's counter
 				if (sCompare != subCompare) {
 					
 					//if number of 1's is even then 1>*>0
