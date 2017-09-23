@@ -54,6 +54,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputMethodListener;
 import java.awt.event.InputMethodEvent;
+import javax.swing.JSeparator;
 
 public class MainWindow {
 
@@ -125,7 +126,7 @@ public class MainWindow {
 					{
 					case JOptionPane.YES_OPTION:
 						//save the contents of editorArea
-						save();
+						saveFromEditor();
 						break;
 						
 					case JOptionPane.NO_OPTION:
@@ -176,9 +177,12 @@ public class MainWindow {
 			public void actionPerformed(ActionEvent e)
 			{
 				//save the contents of editorArea to currentBatch, ifex
-				save();
+				saveFromEditor();
 			}
 		});
+		
+		JSeparator separator_1 = new JSeparator();
+		mnFile.add(separator_1);
 		mnFile.add(mntmSaveBatch);
 		
 		mntmSaveBatchAs = new JMenuItem("Save Batch As...");
@@ -186,16 +190,22 @@ public class MainWindow {
 			public void actionPerformed(ActionEvent e)
 			{
 				//save the contents of the editorArea to a user-defined file
-				saveAs();
+				currentBatch = saveAs(editorArea);
 			}
 		});
 		mnFile.add(mntmSaveBatchAs);
+		
+		JSeparator separator = new JSeparator();
+		mnFile.add(separator);
 		
 		JMenuItem mntmSaveResults = new JMenuItem("Save Results");
 		mnFile.add(mntmSaveResults);
 		
 		JMenuItem mntmSaveResultsAs = new JMenuItem("Save Results As...");
 		mnFile.add(mntmSaveResultsAs);
+		
+		JSeparator separator_2 = new JSeparator();
+		mnFile.add(separator_2);
 		
 		JMenuItem mntmExit = new JMenuItem("Exit");
 		mnFile.add(mntmExit);
@@ -315,7 +325,7 @@ public class MainWindow {
 	/*
 	 * Save the currentBatch. If there is no currentBatch, run saveAs()
 	 */
-	private void save()
+	private void saveFromEditor()
 	{
 		if(currentBatch == null)
 		{
@@ -323,7 +333,14 @@ public class MainWindow {
 			return;
 		}
 		
-		System.out.println("TODO write regular save."); //TODO reg save
+		//editorArea contents into file
+		try
+		{
+			BufferedWriter writer = new BufferedWriter(new FileWriter(currentBatch));
+			writer.write(editorArea.getText());
+			writer.close();
+		}
+		catch (IOException ioe){ ioe.printStackTrace(); }
 		
 		unsavedChanges = false;
 	}
@@ -331,7 +348,7 @@ public class MainWindow {
 	/*
 	 * Save the contents of editorArea to a file in the file system
 	 */
-	private void saveAs()
+	private File saveAs(JTextArea source)
 	{
 		//user defines save file name and directory
 		JFileChooser chooser = new JFileChooser();
@@ -341,21 +358,20 @@ public class MainWindow {
 		if(retVal == JFileChooser.APPROVE_OPTION)
 			f = chooser.getSelectedFile();
 		else
-			return;
-		
-		//save reference to file for future saves
-		currentBatch = f;
+			return null;
 		
 		//editorArea contents into file
 		try
 		{
 			BufferedWriter writer = new BufferedWriter(new FileWriter(f));
-			writer.write(editorArea.getText());
+			writer.write(source.getText());
 			writer.close();
 		}
 		catch (IOException ioe){ ioe.printStackTrace(); }
 		
 		unsavedChanges = false;
+		
+		return f;
 	}
 	
 	//TODO remove debug
