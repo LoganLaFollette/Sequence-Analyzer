@@ -62,6 +62,8 @@ public class MainWindow {
 	private File currentBatch;
 	private boolean unsavedChanges;
 	
+	private File currentOutputDump;
+	
 	private JFrame frame;
 	private JTextField inputLine;
 	private JButton btnEnter;
@@ -70,6 +72,7 @@ public class MainWindow {
 	private JTextArea outputArea;
 	private JMenuItem mntmSaveBatchAs;
 	private JMenuItem mntmSaveBatch;
+	private JMenuItem mntmSaveResultsAs;
 
 	/**
 	 * Launch the application.
@@ -95,6 +98,8 @@ public class MainWindow {
 		
 		currentBatch = null;
 		unsavedChanges = false;
+		
+		currentOutputDump = null;
 	}
 
 	/**
@@ -126,7 +131,8 @@ public class MainWindow {
 					{
 					case JOptionPane.YES_OPTION:
 						//save the contents of editorArea
-						saveFromEditor();
+						save(currentBatch, editorArea);
+						unsavedChanges = false;
 						break;
 						
 					case JOptionPane.NO_OPTION:
@@ -172,17 +178,18 @@ public class MainWindow {
 		});
 		mnFile.add(mntmOpenBatch);
 		
+		JSeparator separator_1 = new JSeparator();
+		mnFile.add(separator_1);
+		
 		mntmSaveBatch = new JMenuItem("Save Batch");
 		mntmSaveBatch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e)
 			{
 				//save the contents of editorArea to currentBatch, ifex
-				saveFromEditor();
+				save(currentBatch, editorArea);
+				unsavedChanges = false;
 			}
 		});
-		
-		JSeparator separator_1 = new JSeparator();
-		mnFile.add(separator_1);
 		mnFile.add(mntmSaveBatch);
 		
 		mntmSaveBatchAs = new JMenuItem("Save Batch As...");
@@ -199,9 +206,21 @@ public class MainWindow {
 		mnFile.add(separator);
 		
 		JMenuItem mntmSaveResults = new JMenuItem("Save Results");
+		mntmSaveResults.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e)
+			{
+				save(currentOutputDump, outputArea);
+			}
+		});
 		mnFile.add(mntmSaveResults);
 		
-		JMenuItem mntmSaveResultsAs = new JMenuItem("Save Results As...");
+		mntmSaveResultsAs = new JMenuItem("Save Results As...");
+		mntmSaveResultsAs.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e)
+			{
+				currentOutputDump = saveAs(outputArea);
+			}
+		});
 		mnFile.add(mntmSaveResultsAs);
 		
 		JSeparator separator_2 = new JSeparator();
@@ -325,24 +344,22 @@ public class MainWindow {
 	/*
 	 * Save the currentBatch. If there is no currentBatch, run saveAs()
 	 */
-	private void saveFromEditor()
+	private void save(File defaultFile, JTextArea source)
 	{
-		if(currentBatch == null)
+		if(defaultFile == null)
 		{
-			mntmSaveBatchAs.getAction().actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null));
+			defaultFile = saveAs(source);
 			return;
 		}
 		
 		//editorArea contents into file
 		try
 		{
-			BufferedWriter writer = new BufferedWriter(new FileWriter(currentBatch));
-			writer.write(editorArea.getText());
+			BufferedWriter writer = new BufferedWriter(new FileWriter(defaultFile));
+			writer.write(source.getText());
 			writer.close();
 		}
 		catch (IOException ioe){ ioe.printStackTrace(); }
-		
-		unsavedChanges = false;
 	}
 	
 	/*
@@ -368,8 +385,6 @@ public class MainWindow {
 			writer.close();
 		}
 		catch (IOException ioe){ ioe.printStackTrace(); }
-		
-		unsavedChanges = false;
 		
 		return f;
 	}
