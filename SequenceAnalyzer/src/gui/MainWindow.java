@@ -73,6 +73,8 @@ public class MainWindow {
 	private JMenuItem mntmSaveBatchAs;
 	private JMenuItem mntmSaveBatch;
 	private JMenuItem mntmSaveResultsAs;
+	private JTabbedPane tabbedPane;
+	private JLabel lblFilename;
 
 	/**
 	 * Launch the application.
@@ -96,7 +98,7 @@ public class MainWindow {
 	public MainWindow() {
 		initialize();
 		
-		currentBatch = null;
+		setCurrentBatch(null);
 		unsavedChanges = false;
 		
 		currentOutputDump = null;
@@ -108,7 +110,7 @@ public class MainWindow {
 	private void initialize() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 800, 600);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
 		JMenuBar menuBar = new JMenuBar();
 		frame.setJMenuBar(menuBar);
@@ -117,6 +119,28 @@ public class MainWindow {
 		menuBar.add(mnFile);
 		
 		JMenuItem mntmNewBatch = new JMenuItem("New Batch...");
+		mntmNewBatch.addActionListener(new ActionListener() {
+			/*
+			 * User creates a new batch file
+			 */
+			public void actionPerformed(ActionEvent arg0)
+			{
+				//select the editor tab
+				tabbedPane.setSelectedIndex(1);
+				
+				//prompt the user to provide a file name
+				JFileChooser chooser = new JFileChooser();
+				chooser.setDialogType(JFileChooser.CUSTOM_DIALOG);
+				int retVal = chooser.showDialog(frame, "Create");
+				File f = null;
+				if(retVal == JFileChooser.APPROVE_OPTION)
+					f = chooser.getSelectedFile();
+				else
+					return;
+				
+				setCurrentBatch(f);
+			}
+		});
 		mnFile.add(mntmNewBatch);
 		
 		JMenuItem mntmOpenBatch = new JMenuItem("Open Batch...");
@@ -160,7 +184,7 @@ public class MainWindow {
 					return;
 				
 				//save reference to file for future saves
-				currentBatch = f;
+				setCurrentBatch(f);
 				
 				//dump file contents into the editorArea
 				try
@@ -197,7 +221,7 @@ public class MainWindow {
 			public void actionPerformed(ActionEvent e)
 			{
 				//save the contents of the editorArea to a user-defined file
-				currentBatch = saveAs(editorArea);
+				setCurrentBatch(saveAs(editorArea));
 			}
 		});
 		mnFile.add(mntmSaveBatchAs);
@@ -227,6 +251,15 @@ public class MainWindow {
 		mnFile.add(separator_2);
 		
 		JMenuItem mntmExit = new JMenuItem("Exit");
+		mntmExit.addActionListener(new ActionListener() {
+			/*
+			 * User manually exits the application
+			 */
+			public void actionPerformed(ActionEvent arg0)
+			{
+				System.exit(0);
+			}
+		});
 		mnFile.add(mntmExit);
 		
 		JMenu mnEdit = new JMenu("Edit");
@@ -236,13 +269,14 @@ public class MainWindow {
 		menuBar.add(mnView);
 		frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.X_AXIS));
 		
-		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setFont(UIManager.getFont("TextArea.font"));
 		frame.getContentPane().add(tabbedPane);
 		
 		JPanel cli_view = new JPanel();
 		cli_view.setBorder(null);
 		tabbedPane.addTab("Command Line", null, cli_view, null);
+		tabbedPane.setEnabledAt(0, true);
 		tabbedPane.setDisplayedMnemonicIndexAt(0, 1);
 		tabbedPane.setMnemonicAt(0, 1);
 		cli_view.setLayout(new MigLayout("", "[2px][grow][]", "[2px][grow][]"));
@@ -287,6 +321,7 @@ public class MainWindow {
 		JPanel editor_view = new JPanel();
 		editor_view.setBorder(null);
 		tabbedPane.addTab("Editor", null, editor_view, null);
+		tabbedPane.setEnabledAt(1, true);
 		tabbedPane.setDisplayedMnemonicIndexAt(1, 2);
 		tabbedPane.setMnemonicAt(1, 2);
 		editor_view.setLayout(new MigLayout("", "[grow]", "[grow][]"));
@@ -334,6 +369,10 @@ public class MainWindow {
 			}
 		});
 		scrollPane_1.setViewportView(editorArea);
+		
+		lblFilename = new JLabel("example.txt");
+		lblFilename.setFont(new Font("Monospaced", Font.PLAIN, 14));
+		scrollPane_1.setColumnHeaderView(lblFilename);
 		
 		lblCursorposdisplay = new JLabel("Line 1 | Col 0");
 		lblCursorposdisplay.setFont(UIManager.getFont("TextArea.font"));
@@ -387,6 +426,18 @@ public class MainWindow {
 		catch (IOException ioe){ ioe.printStackTrace(); }
 		
 		return f;
+	}
+	
+	/*
+	 * Set the file currently being edited in the editor
+	 */
+	private void setCurrentBatch(File f)
+	{
+		currentBatch = f;
+		if(f != null)
+			lblFilename.setText(currentBatch.getName());
+		else
+			lblFilename.setText("???");
 	}
 	
 	//TODO remove debug
