@@ -55,6 +55,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.InputMethodListener;
 import java.awt.event.InputMethodEvent;
 import javax.swing.JSeparator;
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
+import java.awt.Window.Type;
 
 public class MainWindow {
 
@@ -64,7 +68,7 @@ public class MainWindow {
 	
 	private File currentOutputDump;
 	
-	private JFrame frame;
+	private JFrame frmStringSequenceAnalyzer;
 	private JTextField inputLine;
 	private JButton btnEnter;
 	private JTextArea editorArea;
@@ -84,7 +88,7 @@ public class MainWindow {
 			public void run() {
 				try {
 					MainWindow window = new MainWindow();
-					window.frame.setVisible(true);
+					window.frmStringSequenceAnalyzer.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -108,19 +112,21 @@ public class MainWindow {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 800, 600);
-		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frmStringSequenceAnalyzer = new JFrame();
+		frmStringSequenceAnalyzer.setTitle("String Sequence Analyzer - v0.0.1");
+		frmStringSequenceAnalyzer.setBounds(100, 100, 800, 600);
+		frmStringSequenceAnalyzer.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
 		JMenuBar menuBar = new JMenuBar();
-		frame.setJMenuBar(menuBar);
+		frmStringSequenceAnalyzer.setJMenuBar(menuBar);
 		
 		JMenu mnFile = new JMenu("File");
+		mnFile.setMnemonic('f');
 		menuBar.add(mnFile);
 		
 		JMenuItem mntmNewBatch = new JMenuItem("New Batch...");
 		mntmNewBatch.addActionListener(new ActionListener() {
-			/*
+			/**
 			 * User creates a new batch file
 			 */
 			public void actionPerformed(ActionEvent arg0)
@@ -130,8 +136,9 @@ public class MainWindow {
 				
 				//prompt the user to provide a file name
 				JFileChooser chooser = new JFileChooser();
+				chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 				chooser.setDialogType(JFileChooser.CUSTOM_DIALOG);
-				int retVal = chooser.showDialog(frame, "Create");
+				int retVal = chooser.showDialog(frmStringSequenceAnalyzer, "Create");
 				File f = null;
 				if(retVal == JFileChooser.APPROVE_OPTION)
 					f = chooser.getSelectedFile();
@@ -150,7 +157,7 @@ public class MainWindow {
 				//check if any changes have not been saved
 				if(unsavedChanges)
 				{
-					int option = JOptionPane.showConfirmDialog(frame, "There are unsaved changes. Would you like to save?", "Save?", JOptionPane.YES_NO_CANCEL_OPTION);
+					int option = JOptionPane.showConfirmDialog(frmStringSequenceAnalyzer, "There are unsaved changes. Would you like to save?", "Save?", JOptionPane.YES_NO_CANCEL_OPTION);
 					switch(option)
 					{
 					case JOptionPane.YES_OPTION:
@@ -176,7 +183,7 @@ public class MainWindow {
 				//user selects file
 				JFileChooser chooser = new JFileChooser();
 				chooser.setDialogType(JFileChooser.OPEN_DIALOG);
-				int retVal = chooser.showOpenDialog(frame);
+				int retVal = chooser.showOpenDialog(frmStringSequenceAnalyzer);
 				File f = null;
 				if(retVal == JFileChooser.APPROVE_OPTION)
 					f = chooser.getSelectedFile();
@@ -252,7 +259,7 @@ public class MainWindow {
 		
 		JMenuItem mntmExit = new JMenuItem("Exit");
 		mntmExit.addActionListener(new ActionListener() {
-			/*
+			/**
 			 * User manually exits the application
 			 */
 			public void actionPerformed(ActionEvent arg0)
@@ -263,15 +270,45 @@ public class MainWindow {
 		mnFile.add(mntmExit);
 		
 		JMenu mnEdit = new JMenu("Edit");
+		mnEdit.setMnemonic('e');
 		menuBar.add(mnEdit);
 		
 		JMenu mnView = new JMenu("View");
+		mnView.setMnemonic('v');
 		menuBar.add(mnView);
-		frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.X_AXIS));
+		
+		JMenu mnWordWrap = new JMenu("Word Wrap");
+		mnWordWrap.setMnemonic('w');
+		mnView.add(mnWordWrap);
+		
+		JCheckBoxMenuItem chckbxmntmCommandLine = new JCheckBoxMenuItem("Command Line");
+		chckbxmntmCommandLine.addActionListener(new ActionListener() {
+			/**
+			 * Toggle line wrapping for the CLI output
+			 */
+			public void actionPerformed(ActionEvent arg0)
+			{
+				outputArea.setLineWrap(chckbxmntmCommandLine.isSelected());
+			}
+		});
+		mnWordWrap.add(chckbxmntmCommandLine);
+		
+		JCheckBoxMenuItem chckbxmntmEditor = new JCheckBoxMenuItem("Editor");
+		chckbxmntmEditor.addActionListener(new ActionListener() {
+			/**
+			 * Toggle line wrapping for the editor area
+			 */
+			public void actionPerformed(ActionEvent e)
+			{
+				editorArea.setLineWrap(chckbxmntmEditor.isSelected());
+			}
+		});
+		mnWordWrap.add(chckbxmntmEditor);
+		frmStringSequenceAnalyzer.getContentPane().setLayout(new BoxLayout(frmStringSequenceAnalyzer.getContentPane(), BoxLayout.X_AXIS));
 		
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setFont(UIManager.getFont("TextArea.font"));
-		frame.getContentPane().add(tabbedPane);
+		frmStringSequenceAnalyzer.getContentPane().add(tabbedPane);
 		
 		JPanel cli_view = new JPanel();
 		cli_view.setBorder(null);
@@ -292,7 +329,7 @@ public class MainWindow {
 		inputLine = new JTextField();
 		inputLine.setFont(UIManager.getFont("TextArea.font"));
 		inputLine.addKeyListener(new KeyAdapter() {
-			/*
+			/**
 			 * Input line pushing input text somewhere
 			 */
 			@Override
@@ -308,7 +345,7 @@ public class MainWindow {
 		btnEnter.setFont(UIManager.getFont("TextArea.font"));
 		btnEnter.setToolTipText("Run what's currently in the input line.");
 		btnEnter.addMouseListener(new MouseAdapter() {
-			/*
+			/**
 			 * Tell the input line to push input somewhere
 			 */
 			@Override
@@ -345,7 +382,7 @@ public class MainWindow {
 			}
 		});
 		editorArea.addCaretListener(new CaretListener() {
-			/*
+			/**
 			 * Update caret status bar in the editor tab
 			 */
 			public void caretUpdate(CaretEvent arg0)
@@ -380,7 +417,7 @@ public class MainWindow {
 		editor_view.add(lblCursorposdisplay, "cell 0 1");
 	}
 	
-	/*
+	/**
 	 * Save the currentBatch. If there is no currentBatch, run saveAs()
 	 */
 	private void save(File defaultFile, JTextArea source)
@@ -401,7 +438,7 @@ public class MainWindow {
 		catch (IOException ioe){ ioe.printStackTrace(); }
 	}
 	
-	/*
+	/**
 	 * Save the contents of editorArea to a file in the file system
 	 */
 	private File saveAs(JTextArea source)
@@ -409,7 +446,7 @@ public class MainWindow {
 		//user defines save file name and directory
 		JFileChooser chooser = new JFileChooser();
 		chooser.setDialogType(JFileChooser.SAVE_DIALOG);
-		int retVal = chooser.showSaveDialog(frame);
+		int retVal = chooser.showSaveDialog(frmStringSequenceAnalyzer);
 		File f = null;
 		if(retVal == JFileChooser.APPROVE_OPTION)
 			f = chooser.getSelectedFile();
@@ -428,7 +465,7 @@ public class MainWindow {
 		return f;
 	}
 	
-	/*
+	/**
 	 * Set the file currently being edited in the editor
 	 */
 	private void setCurrentBatch(File f)
