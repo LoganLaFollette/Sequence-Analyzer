@@ -59,6 +59,8 @@ import javax.swing.JCheckBoxMenuItem;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
 import java.awt.Window.Type;
+import javax.swing.KeyStroke;
+import java.awt.event.InputEvent;
 
 public class MainWindow {
 
@@ -125,6 +127,7 @@ public class MainWindow {
 		menuBar.add(mnFile);
 		
 		JMenuItem mntmNewBatch = new JMenuItem("New Batch...");
+		mntmNewBatch.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_MASK));
 		mntmNewBatch.addActionListener(new ActionListener() {
 			/**
 			 * User creates a new batch file
@@ -133,6 +136,10 @@ public class MainWindow {
 			{
 				//select the editor tab
 				tabbedPane.setSelectedIndex(1);
+				
+				//if there are unresolved changes, abort creating a new file
+				if(!resolveUnsavedChanges())
+					return;
 				
 				//prompt the user to provide a file name
 				JFileChooser chooser = new JFileChooser();
@@ -151,31 +158,15 @@ public class MainWindow {
 		mnFile.add(mntmNewBatch);
 		
 		JMenuItem mntmOpenBatch = new JMenuItem("Open Batch...");
+		mntmOpenBatch.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_MASK));
 		mntmOpenBatch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0)
 			{
-				//check if any changes have not been saved
-				if(unsavedChanges)
-				{
-					int option = JOptionPane.showConfirmDialog(frmStringSequenceAnalyzer, "There are unsaved changes. Would you like to save?", "Save?", JOptionPane.YES_NO_CANCEL_OPTION);
-					switch(option)
-					{
-					case JOptionPane.YES_OPTION:
-						//save the contents of editorArea
-						save(currentBatch, editorArea);
-						unsavedChanges = false;
-						break;
-						
-					case JOptionPane.NO_OPTION:
-						//just continue with the opening procedure
-						
-						break;
-						
-					case JOptionPane.CANCEL_OPTION:
-						//back out of opening a file
-						return;
-					}
-				}
+				tabbedPane.setSelectedIndex(1);
+				
+				//if there are unresolved changes, abort opening a new file
+				if(!resolveUnsavedChanges())
+					return;
 				
 				//dump the contents of the editor
 				editorArea.setText("");
@@ -213,7 +204,11 @@ public class MainWindow {
 		mnFile.add(separator_1);
 		
 		mntmSaveBatch = new JMenuItem("Save Batch");
+		mntmSaveBatch.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK));
 		mntmSaveBatch.addActionListener(new ActionListener() {
+			/**
+			 * Basic save operation for the Editor
+			 */
 			public void actionPerformed(ActionEvent e)
 			{
 				//save the contents of editorArea to currentBatch, ifex
@@ -224,7 +219,11 @@ public class MainWindow {
 		mnFile.add(mntmSaveBatch);
 		
 		mntmSaveBatchAs = new JMenuItem("Save Batch As...");
+		mntmSaveBatchAs.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK | InputEvent.ALT_MASK));
 		mntmSaveBatchAs.addActionListener(new ActionListener() {
+			/**
+			 * Save and specify file for Editor
+			 */
 			public void actionPerformed(ActionEvent e)
 			{
 				//save the contents of the editorArea to a user-defined file
@@ -237,7 +236,11 @@ public class MainWindow {
 		mnFile.add(separator);
 		
 		JMenuItem mntmSaveResults = new JMenuItem("Save Results");
+		mntmSaveResults.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK | InputEvent.SHIFT_MASK));
 		mntmSaveResults.addActionListener(new ActionListener() {
+			/**
+			 * Basic save for CLI output
+			 */
 			public void actionPerformed(ActionEvent e)
 			{
 				save(currentOutputDump, outputArea);
@@ -246,7 +249,11 @@ public class MainWindow {
 		mnFile.add(mntmSaveResults);
 		
 		mntmSaveResultsAs = new JMenuItem("Save Results As...");
+		mntmSaveResultsAs.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK | InputEvent.ALT_MASK | InputEvent.SHIFT_MASK));
 		mntmSaveResultsAs.addActionListener(new ActionListener() {
+			/**
+			 * Save an specify file for CLI output
+			 */
 			public void actionPerformed(ActionEvent e)
 			{
 				currentOutputDump = saveAs(outputArea);
@@ -258,6 +265,7 @@ public class MainWindow {
 		mnFile.add(separator_2);
 		
 		JMenuItem mntmExit = new JMenuItem("Exit");
+		mntmExit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, InputEvent.CTRL_MASK));
 		mntmExit.addActionListener(new ActionListener() {
 			/**
 			 * User manually exits the application
@@ -367,6 +375,7 @@ public class MainWindow {
 		editor_view.add(scrollPane_1, "cell 0 0,grow");
 		
 		editorArea = new JTextArea();
+		editorArea.setWrapStyleWord(true);
 		editorArea.getDocument().addDocumentListener(new DocumentListener() {
 			@Override
 			public void changedUpdate(DocumentEvent arg0) {
@@ -475,6 +484,38 @@ public class MainWindow {
 			lblFilename.setText(currentBatch.getName());
 		else
 			lblFilename.setText("???");
+	}
+	
+	/**
+	 * Check for unsaved changes in the Editor
+	 * 
+	 * @return whether the situation was resolved
+	 */
+	private boolean resolveUnsavedChanges()
+	{
+		//check if any changes have not been saved
+		if(unsavedChanges)
+		{
+			int option = JOptionPane.showConfirmDialog(frmStringSequenceAnalyzer, "There are unsaved changes. Would you like to save?", "Save?", JOptionPane.YES_NO_CANCEL_OPTION);
+			switch(option)
+			{
+			case JOptionPane.YES_OPTION:
+				//save the contents of editorArea
+				save(currentBatch, editorArea);
+				unsavedChanges = false;
+				break;
+				
+			case JOptionPane.NO_OPTION:
+				//just continue with the opening procedure
+				
+				break;
+				
+			case JOptionPane.CANCEL_OPTION:
+				//back out of opening a file
+				return false;
+			}
+		}
+		return true;
 	}
 	
 	//TODO remove debug
