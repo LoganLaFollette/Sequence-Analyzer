@@ -1,5 +1,9 @@
 package engine;
 
-public abstract class Command {
-
+public abstract class Command 
+{
+  public void execute()
+  {
+    
+  }
 }
