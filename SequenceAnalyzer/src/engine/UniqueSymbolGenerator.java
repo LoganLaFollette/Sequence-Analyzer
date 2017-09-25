@@ -3,7 +3,7 @@ package engine;
 import java.util.*;
 
 public class UniqueSymbolGenerator {
-	private Map<String, String> varNames = new HashMap<>(); //Stores Variables and their values
+	protected Map<String, String> varNames = new HashMap<>(); //Stores Variables and their values
 //	int symbolNum = 0;
 	
 	//Generates a blank variable
