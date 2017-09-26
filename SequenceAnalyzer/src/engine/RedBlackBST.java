@@ -28,7 +28,6 @@ package engine;
  *
  ******************************************************************************/
 
-import java.util.NoSuchElementException;
 import java.util.*;
 
 /**
@@ -570,7 +569,7 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
      * @return all keys in the symbol table as an {@code Iterable}
      */
     public Iterable<Key> keys() {
-        if (isEmpty()) return new Queue<Key>();
+        if (isEmpty()) return new PriorityQueue<Key>();
         return keys(min(), max());
     }
 
@@ -589,7 +588,7 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
         if (lo == null) throw new IllegalArgumentException("first argument to keys() is null");
         if (hi == null) throw new IllegalArgumentException("second argument to keys() is null");
 
-        Queue<Key> queue = new Queue<Key>();
+        Queue<Key> queue = new PriorityQueue<Key>();
         // if (isEmpty() || lo.compareTo(hi) > 0) return queue;
         keys(root, queue, lo, hi);
         return queue;
@@ -602,7 +601,7 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
         int cmplo = lo.compareTo(x.key); 
         int cmphi = hi.compareTo(x.key); 
         if (cmplo < 0) keys(x.left, queue, lo, hi); 
-        if (cmplo <= 0 && cmphi >= 0) queue.enqueue(x.key); 
+        if (cmplo <= 0 && cmphi >= 0) queue.offer(x.key); 
         if (cmphi > 0) keys(x.right, queue, lo, hi); 
     } 
 
@@ -630,11 +629,11 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
     *  Check integrity of red-black tree data structure.
     ***************************************************************************/
     private boolean check() {
-        if (!isBST())            StdOut.println("Not in symmetric order");
-        if (!isSizeConsistent()) StdOut.println("Subtree counts not consistent");
-        if (!isRankConsistent()) StdOut.println("Ranks not consistent");
-        if (!is23())             StdOut.println("Not a 2-3 tree");
-        if (!isBalanced())       StdOut.println("Not balanced");
+        if (!isBST())            System.out.println("Not in symmetric order");
+        if (!isSizeConsistent()) System.out.println("Subtree counts not consistent");
+        if (!isRankConsistent()) System.out.println("Ranks not consistent");
+        if (!is23())             System.out.println("Not a 2-3 tree");
+        if (!isBalanced())       System.out.println("Not balanced");
         return isBST() && isSizeConsistent() && isRankConsistent() && is23() && isBalanced();
     }
 
@@ -706,14 +705,14 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
      *
      * @param args the command-line arguments
      */
-    public static void main(String[] args) { 
-        RedBlackBST<String, Integer> st = new RedBlackBST<String, Integer>();
-        for (int i = 0; !StdIn.isEmpty(); i++) {
-            String key = StdIn.readString();
-            st.put(key, i);
-        }
-        for (String s : st.keys())
-            StdOut.println(s + " " + st.get(s));
-        StdOut.println();
-    }
+//    public static void main(String[] args) { 
+//        RedBlackBST<String, Integer> st = new RedBlackBST<String, Integer>();
+//        for (int i = 0; !StdIn.isEmpty(); i++) {
+//            String key = StdIn.readString();
+//            st.put(key, i);
+//        }
+//        for (String s : st.keys())
+//            System.out.println(s + " " + st.get(s));
+//        System.out.println();
+//    }
 }
