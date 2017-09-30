@@ -61,6 +61,11 @@ import javax.swing.event.ChangeEvent;
 import java.awt.Window.Type;
 import javax.swing.KeyStroke;
 import java.awt.event.InputEvent;
+import javax.swing.JPopupMenu;
+import javax.swing.JToolBar;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.JCheckBox;
 
 public class MainWindow {
 
@@ -75,12 +80,12 @@ public class MainWindow {
 	private JButton btnEnter;
 	private JTextArea editorArea;
 	private JLabel lblCursorposdisplay;
-	private JTextArea outputArea;
 	private JMenuItem mntmSaveBatchAs;
 	private JMenuItem mntmSaveBatch;
 	private JMenuItem mntmSaveResultsAs;
 	private JTabbedPane tabbedPane;
 	private JLabel lblFilename;
+	private JTextPane outputArea;
 
 	/**
 	 * Launch the application.
@@ -120,9 +125,11 @@ public class MainWindow {
 		frmStringSequenceAnalyzer.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
 		JMenuBar menuBar = new JMenuBar();
+		menuBar.setFont(new Font("Courier New", Font.PLAIN, 15));
 		frmStringSequenceAnalyzer.setJMenuBar(menuBar);
 		
 		JMenu mnFile = new JMenu("File");
+		mnFile.setFont(UIManager.getFont("InternalFrame.titleFont"));
 		mnFile.setMnemonic('f');
 		menuBar.add(mnFile);
 		
@@ -315,7 +322,7 @@ public class MainWindow {
 		frmStringSequenceAnalyzer.getContentPane().setLayout(new BoxLayout(frmStringSequenceAnalyzer.getContentPane(), BoxLayout.X_AXIS));
 		
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane.setFont(UIManager.getFont("TextArea.font"));
+		tabbedPane.setFont(UIManager.getFont("InternalFrame.titleFont"));
 		frmStringSequenceAnalyzer.getContentPane().add(tabbedPane);
 		
 		JPanel cli_view = new JPanel();
@@ -324,18 +331,35 @@ public class MainWindow {
 		tabbedPane.setEnabledAt(0, true);
 		tabbedPane.setDisplayedMnemonicIndexAt(0, 1);
 		tabbedPane.setMnemonicAt(0, 1);
-		cli_view.setLayout(new MigLayout("", "[2px][grow][]", "[2px][grow][]"));
+		cli_view.setLayout(new MigLayout("", "[2px][grow][]", "[][2px][grow][]"));
+		
+		JToolBar cliToolBar = new JToolBar();
+		cliToolBar.setFloatable(false);
+		cli_view.add(cliToolBar, "flowx,cell 0 0 3 1");
+		
+		JPanel panel = new JPanel();
+		cliToolBar.add(panel);
+		
+		JLabel lblcliFontSize = new JLabel("Font Size");
+		panel.add(lblcliFontSize);
+		
+		JSpinner cliFontSize = new JSpinner();
+		cliFontSize.setModel(new SpinnerNumberModel(13, 8, 72, 1));
+		panel.add(cliFontSize);
+		
+		JCheckBox chckbxCliwordwrap = new JCheckBox("Word Wrap");
+		cliToolBar.add(chckbxCliwordwrap);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		cli_view.add(scrollPane, "cell 0 0 3 2,grow");
+		cli_view.add(scrollPane, "cell 0 1 3 2,grow");
 		
-		outputArea = new JTextArea();
-		outputArea.setTabSize(4);
+		outputArea = new JTextPane();
+		outputArea.setFont(new Font("Courier New", Font.PLAIN, 13));
 		outputArea.setEditable(false);
 		scrollPane.setViewportView(outputArea);
 		
 		inputLine = new JTextField();
-		inputLine.setFont(UIManager.getFont("TextArea.font"));
+		inputLine.setFont(new Font("Courier New", Font.PLAIN, 13));
 		inputLine.addKeyListener(new KeyAdapter() {
 			/**
 			 * Input line pushing input text somewhere
@@ -346,11 +370,11 @@ public class MainWindow {
 					sendInToOut();
 			}
 		});
-		cli_view.add(inputLine, "cell 0 2 2 1,growx");
+		cli_view.add(inputLine, "cell 0 3 2 1,growx");
 		inputLine.setColumns(10);
 		
 		btnEnter = new JButton("Enter");
-		btnEnter.setFont(UIManager.getFont("TextArea.font"));
+		btnEnter.setFont(UIManager.getFont("InternalFrame.titleFont"));
 		btnEnter.setToolTipText("Run what's currently in the input line.");
 		btnEnter.addMouseListener(new MouseAdapter() {
 			/**
@@ -361,7 +385,7 @@ public class MainWindow {
 				sendInToOut(); //TODO remove debug
 			}
 		});
-		cli_view.add(btnEnter, "cell 2 2");
+		cli_view.add(btnEnter, "cell 2 3");
 		
 		JPanel editor_view = new JPanel();
 		editor_view.setBorder(null);
@@ -369,12 +393,31 @@ public class MainWindow {
 		tabbedPane.setEnabledAt(1, true);
 		tabbedPane.setDisplayedMnemonicIndexAt(1, 2);
 		tabbedPane.setMnemonicAt(1, 2);
-		editor_view.setLayout(new MigLayout("", "[grow]", "[grow][]"));
+		editor_view.setLayout(new MigLayout("", "[grow]", "[][grow][]"));
+		
+		JToolBar editorToolBar = new JToolBar();
+		editorToolBar.setFloatable(false);
+		editor_view.add(editorToolBar, "cell 0 0");
+		
+		JPanel panel_1 = new JPanel();
+		editorToolBar.add(panel_1);
+		
+		JLabel lbleditorFontSize = new JLabel("Font Size");
+		panel_1.add(lbleditorFontSize);
+		
+		JSpinner editorFontSize = new JSpinner();
+		editorFontSize.setModel(new SpinnerNumberModel(13, 8, 72, 1));
+		panel_1.add(editorFontSize);
+		
+		JCheckBox editorWordWrap = new JCheckBox("Word Wrap");
+		editorToolBar.add(editorWordWrap);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
-		editor_view.add(scrollPane_1, "cell 0 0,grow");
+		editor_view.add(scrollPane_1, "cell 0 1,grow");
 		
 		editorArea = new JTextArea();
+		editorArea.setTabSize(4);
+		editorArea.setFont(new Font("Courier New", Font.PLAIN, 13));
 		editorArea.setWrapStyleWord(true);
 		editorArea.getDocument().addDocumentListener(new DocumentListener() {
 			@Override
@@ -417,13 +460,21 @@ public class MainWindow {
 		scrollPane_1.setViewportView(editorArea);
 		
 		lblFilename = new JLabel("example.txt");
-		lblFilename.setFont(new Font("Monospaced", Font.PLAIN, 14));
+		lblFilename.setFont(UIManager.getFont("InternalFrame.titleFont"));
 		scrollPane_1.setColumnHeaderView(lblFilename);
 		
 		lblCursorposdisplay = new JLabel("Line 1 | Col 0");
-		lblCursorposdisplay.setFont(UIManager.getFont("TextArea.font"));
+		lblCursorposdisplay.setFont(UIManager.getFont("InternalFrame.titleFont"));
 		lblCursorposdisplay.setHorizontalAlignment(SwingConstants.RIGHT);
-		editor_view.add(lblCursorposdisplay, "cell 0 1");
+		editor_view.add(lblCursorposdisplay, "cell 0 2");
+	}
+	
+	/**
+	 * Change the font size of a text area
+	 */
+	private void setFontSize(JTextArea area, int size)
+	{
+		area.setFont(area.getFont().deriveFont(size));
 	}
 	
 	/**
@@ -450,7 +501,7 @@ public class MainWindow {
 	/**
 	 * Save the contents of editorArea to a file in the file system
 	 */
-	private File saveAs(JTextArea source)
+	private File saveAs(JTextPane source)
 	{
 		//user defines save file name and directory
 		JFileChooser chooser = new JFileChooser();
@@ -523,5 +574,22 @@ public class MainWindow {
 	{
 		outputArea.setText(outputArea.getText() + inputLine.getText() + "\n");
 		inputLine.setText("");
+	}
+	private static void addPopup(Component component, final JPopupMenu popup) {
+		component.addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+				if (e.isPopupTrigger()) {
+					showMenu(e);
+				}
+			}
+			public void mouseReleased(MouseEvent e) {
+				if (e.isPopupTrigger()) {
+					showMenu(e);
+				}
+			}
+			private void showMenu(MouseEvent e) {
+				popup.show(e.getComponent(), e.getX(), e.getY());
+			}
+		});
 	}
 }
