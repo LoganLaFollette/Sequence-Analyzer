@@ -128,6 +128,7 @@ public class MainWindow {
 		};
 		
 		history = new ArrayList<String>();
+		history.add("");
 		historyPointer = 0;
 	}
 
@@ -367,25 +368,22 @@ public class MainWindow {
 				if(e.getKeyCode() == KeyEvent.VK_ENTER)
 					sendInToOut();
 				
-				if(history.size() == 0)
-					return;
-				
 				if(e.getKeyCode() == KeyEvent.VK_UP)
 				{
-					inputLine.setText(history.get(historyPointer));
-					
 					historyPointer--;
 					if(historyPointer < 0)
 						historyPointer = 0;
+					
+					inputLine.setText(history.get(historyPointer));
 				}
 				
 				if(e.getKeyCode() == KeyEvent.VK_DOWN)
 				{
-					inputLine.setText(history.get(historyPointer));
-					
 					historyPointer++;
 					if(historyPointer > history.size() - 1)
 						historyPointer = history.size() - 1;
+					
+					inputLine.setText(history.get(historyPointer));
 				}
 			}
 		});
@@ -599,7 +597,7 @@ public class MainWindow {
 	private void sendInToOut()
 	{
 		outputArea.setText(outputArea.getText() + inputLine.getText() + "\n");
-		history.add(inputLine.getText());
+		history.add(history.size() - 1, inputLine.getText());
 		historyPointer = history.size() - 1;
 		inputLine.setText("");
 	}
