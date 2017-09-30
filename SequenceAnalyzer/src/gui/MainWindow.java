@@ -10,7 +10,6 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JTextField;
 import javax.swing.BoxLayout;
-import javax.swing.JTextArea;
 import java.awt.Font;
 import net.miginfocom.swing.MigLayout;
 import java.awt.event.KeyAdapter;
@@ -23,6 +22,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -46,8 +46,6 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.JCheckBox;
 import javax.swing.JEditorPane;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
 
@@ -64,6 +62,10 @@ public class MainWindow {
 	
 	//A listener that raises the unsavedChanges flag
 	private DocumentListener changesListener;
+	
+	//A list of the commands previously entered into the CLI
+	private ArrayList<String> history;
+	private int historyPointer;
 	
 	private JFrame frmStringSequenceAnalyzer;
 	private JTextField inputLine;
@@ -113,20 +115,20 @@ public class MainWindow {
 				unsavedChanges = true;
 				System.out.println("There are now unsaved changes."); //DEBUG
 			}
-
 			@Override
 			public void insertUpdate(DocumentEvent arg0) {
 				unsavedChanges = true;
 				System.out.println("There are now unsaved insertions."); //DEBUG
 			}
-
 			@Override
 			public void removeUpdate(DocumentEvent arg0) {
 				unsavedChanges = true;
 				System.out.println("There are now unsaved deletions."); //DEBUG
 			}
-			
 		};
+		
+		history = new ArrayList<String>();
+		historyPointer = 0;
 	}
 
 	/**
@@ -364,6 +366,27 @@ public class MainWindow {
 			public void keyPressed(KeyEvent e) {
 				if(e.getKeyCode() == KeyEvent.VK_ENTER)
 					sendInToOut();
+				
+				if(history.size() == 0)
+					return;
+				
+				if(e.getKeyCode() == KeyEvent.VK_UP)
+				{
+					inputLine.setText(history.get(historyPointer));
+					
+					historyPointer--;
+					if(historyPointer < 0)
+						historyPointer = 0;
+				}
+				
+				if(e.getKeyCode() == KeyEvent.VK_DOWN)
+				{
+					inputLine.setText(history.get(historyPointer));
+					
+					historyPointer++;
+					if(historyPointer > history.size() - 1)
+						historyPointer = history.size() - 1;
+				}
 			}
 		});
 		cli_view.add(inputLine, "cell 0 3 2 1,grow");
@@ -576,6 +599,8 @@ public class MainWindow {
 	private void sendInToOut()
 	{
 		outputArea.setText(outputArea.getText() + inputLine.getText() + "\n");
+		history.add(inputLine.getText());
+		historyPointer = history.size() - 1;
 		inputLine.setText("");
 	}
 }
