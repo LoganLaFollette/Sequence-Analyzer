@@ -53,11 +53,17 @@ import javax.swing.event.ChangeEvent;
 
 public class MainWindow {
 
-	//The file most recently opened/saved
+	//The file most recently opened/saved batch
 	private File currentBatch;
+	
+	//A flag that indicates changes made to currentBatch
 	private boolean unsavedChanges;
 	
+	//The file to which output dumps will be saved
 	private File currentOutputDump;
+	
+	//A listener that raises the unsavedChanges flag
+	private DocumentListener changesListener;
 	
 	private JFrame frmStringSequenceAnalyzer;
 	private JTextField inputLine;
@@ -97,6 +103,30 @@ public class MainWindow {
 		unsavedChanges = false;
 		
 		currentOutputDump = null;
+		
+		changesListener = new DocumentListener() {
+			/**
+			 * Track changes made to the currently open document
+			 */
+			@Override
+			public void changedUpdate(DocumentEvent arg0) {
+				unsavedChanges = true;
+				System.out.println("There are now unsaved changes."); //DEBUG
+			}
+
+			@Override
+			public void insertUpdate(DocumentEvent arg0) {
+				unsavedChanges = true;
+				System.out.println("There are now unsaved insertions."); //DEBUG
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent arg0) {
+				unsavedChanges = true;
+				System.out.println("There are now unsaved deletions."); //DEBUG
+			}
+			
+		};
 	}
 
 	/**
@@ -180,6 +210,7 @@ public class MainWindow {
 				{
 					BufferedReader reader = new BufferedReader(new FileReader(f));
 					editorArea.read(reader, reader);
+					editorArea.getDocument().addDocumentListener(changesListener);
 					reader.close();
 				}
 				catch (IOException e){ e.printStackTrace(); }
@@ -306,7 +337,7 @@ public class MainWindow {
 			{
 				int size = (int)cliFontSize.getModel().getValue();
 				setFontSize(outputArea, size);
-				setFontSize(inputLine, size);
+				setFontSize(inputLine, size > 24 ? 24 : size);
 			}
 		});
 		cliFontSize.setModel(new SpinnerNumberModel(13, 8, 72, 1));
@@ -335,7 +366,7 @@ public class MainWindow {
 					sendInToOut();
 			}
 		});
-		cli_view.add(inputLine, "cell 0 3 2 1,growx");
+		cli_view.add(inputLine, "cell 0 3 2 1,grow");
 		inputLine.setColumns(10);
 		
 		btnEnter = new JButton("Enter");
@@ -400,29 +431,7 @@ public class MainWindow {
 		
 		editorArea = new JTextPane();
 		editorArea.setFont(new Font("Courier New", Font.PLAIN, 13));
-		editorArea.getDocument().addDocumentListener(new DocumentListener() {
-			/**
-			 * Track changes made to the currently open document
-			 */
-			@Override
-			public void changedUpdate(DocumentEvent arg0) {
-				unsavedChanges = true;
-				
-			}
-
-			@Override
-			public void insertUpdate(DocumentEvent arg0) {
-				unsavedChanges = true;
-				
-			}
-
-			@Override
-			public void removeUpdate(DocumentEvent arg0) {
-				unsavedChanges = true;
-				
-			}
-			
-		});
+		editorArea.getDocument().addDocumentListener(changesListener);
 		editorArea.addCaretListener(new CaretListener() {
 			/**
 			 * Update caret status bar in the editor tab
