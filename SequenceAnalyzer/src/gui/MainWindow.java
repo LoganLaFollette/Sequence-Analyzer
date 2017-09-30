@@ -6,17 +6,11 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JMenu;
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.RowSpec;
-import com.jgoodies.forms.layout.FormSpecs;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JTextField;
 import javax.swing.BoxLayout;
-import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
-import java.awt.Color;
 import java.awt.Font;
 import net.miginfocom.swing.MigLayout;
 import java.awt.event.KeyAdapter;
@@ -26,20 +20,12 @@ import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
-import javax.swing.JInternalFrame;
-//import org.eclipse.wb.swing.FocusTraversalOnArray;
-import java.awt.Component;
 import javax.swing.JTabbedPane;
-import javax.swing.border.LineBorder;
-import java.awt.BorderLayout;
-import java.awt.CardLayout;
 import javax.swing.UIManager;
 import javax.swing.JPanel;
 import javax.swing.JTextPane;
@@ -48,24 +34,22 @@ import javax.swing.SwingConstants;
 import javax.swing.event.CaretListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.text.BadLocationException;
+import javax.swing.text.JTextComponent;
 import javax.swing.event.CaretEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.awt.event.InputMethodListener;
-import java.awt.event.InputMethodEvent;
 import javax.swing.JSeparator;
-import javax.swing.JCheckBoxMenuItem;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.ChangeEvent;
-import java.awt.Window.Type;
 import javax.swing.KeyStroke;
 import java.awt.event.InputEvent;
-import javax.swing.JPopupMenu;
 import javax.swing.JToolBar;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.JCheckBox;
+import javax.swing.JEditorPane;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
 
 public class MainWindow {
 
@@ -78,7 +62,6 @@ public class MainWindow {
 	private JFrame frmStringSequenceAnalyzer;
 	private JTextField inputLine;
 	private JButton btnEnter;
-	private JTextArea editorArea;
 	private JLabel lblCursorposdisplay;
 	private JMenuItem mntmSaveBatchAs;
 	private JMenuItem mntmSaveBatch;
@@ -86,6 +69,7 @@ public class MainWindow {
 	private JTabbedPane tabbedPane;
 	private JLabel lblFilename;
 	private JTextPane outputArea;
+	private JTextPane editorArea;
 
 	/**
 	 * Launch the application.
@@ -195,9 +179,7 @@ public class MainWindow {
 				try
 				{
 					BufferedReader reader = new BufferedReader(new FileReader(f));
-					String line;
-					while((line = reader.readLine()) != null)
-						editorArea.append(line + "\n");
+					editorArea.read(reader, reader);
 					reader.close();
 				}
 				catch (IOException e){ e.printStackTrace(); }
@@ -219,7 +201,7 @@ public class MainWindow {
 			public void actionPerformed(ActionEvent e)
 			{
 				//save the contents of editorArea to currentBatch, ifex
-				save(currentBatch, editorArea);
+				save(currentBatch, editorArea.getText());
 				unsavedChanges = false;
 			}
 		});
@@ -234,7 +216,7 @@ public class MainWindow {
 			public void actionPerformed(ActionEvent e)
 			{
 				//save the contents of the editorArea to a user-defined file
-				setCurrentBatch(saveAs(editorArea));
+				setCurrentBatch(saveAs(editorArea.getText()));
 			}
 		});
 		mnFile.add(mntmSaveBatchAs);
@@ -250,7 +232,7 @@ public class MainWindow {
 			 */
 			public void actionPerformed(ActionEvent e)
 			{
-				save(currentOutputDump, outputArea);
+				save(currentOutputDump, outputArea.getText());
 			}
 		});
 		mnFile.add(mntmSaveResults);
@@ -263,7 +245,7 @@ public class MainWindow {
 			 */
 			public void actionPerformed(ActionEvent e)
 			{
-				currentOutputDump = saveAs(outputArea);
+				currentOutputDump = saveAs(outputArea.getText());
 			}
 		});
 		mnFile.add(mntmSaveResultsAs);
@@ -291,34 +273,6 @@ public class MainWindow {
 		JMenu mnView = new JMenu("View");
 		mnView.setMnemonic('v');
 		menuBar.add(mnView);
-		
-		JMenu mnWordWrap = new JMenu("Word Wrap");
-		mnWordWrap.setMnemonic('w');
-		mnView.add(mnWordWrap);
-		
-		JCheckBoxMenuItem chckbxmntmCommandLine = new JCheckBoxMenuItem("Command Line");
-		chckbxmntmCommandLine.addActionListener(new ActionListener() {
-			/**
-			 * Toggle line wrapping for the CLI output
-			 */
-			public void actionPerformed(ActionEvent arg0)
-			{
-				outputArea.setLineWrap(chckbxmntmCommandLine.isSelected());
-			}
-		});
-		mnWordWrap.add(chckbxmntmCommandLine);
-		
-		JCheckBoxMenuItem chckbxmntmEditor = new JCheckBoxMenuItem("Editor");
-		chckbxmntmEditor.addActionListener(new ActionListener() {
-			/**
-			 * Toggle line wrapping for the editor area
-			 */
-			public void actionPerformed(ActionEvent e)
-			{
-				editorArea.setLineWrap(chckbxmntmEditor.isSelected());
-			}
-		});
-		mnWordWrap.add(chckbxmntmEditor);
 		frmStringSequenceAnalyzer.getContentPane().setLayout(new BoxLayout(frmStringSequenceAnalyzer.getContentPane(), BoxLayout.X_AXIS));
 		
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
@@ -344,6 +298,17 @@ public class MainWindow {
 		panel.add(lblcliFontSize);
 		
 		JSpinner cliFontSize = new JSpinner();
+		cliFontSize.addChangeListener(new ChangeListener() {
+			/**
+			 * Set the font size of the CLI
+			 */
+			public void stateChanged(ChangeEvent e)
+			{
+				int size = (int)cliFontSize.getModel().getValue();
+				setFontSize(outputArea, size);
+				setFontSize(inputLine, size);
+			}
+		});
 		cliFontSize.setModel(new SpinnerNumberModel(13, 8, 72, 1));
 		panel.add(cliFontSize);
 		
@@ -406,62 +371,83 @@ public class MainWindow {
 		panel_1.add(lbleditorFontSize);
 		
 		JSpinner editorFontSize = new JSpinner();
+		editorFontSize.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent arg0)
+			{
+				int size = (int)editorFontSize.getModel().getValue();
+				setFontSize(editorArea, size);
+				lblFilename.setFont(lblFilename.getFont().deriveFont((float)size));
+			}
+		});
 		editorFontSize.setModel(new SpinnerNumberModel(13, 8, 72, 1));
 		panel_1.add(editorFontSize);
 		
 		JCheckBox editorWordWrap = new JCheckBox("Word Wrap");
+		editorWordWrap.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e)
+			{
+				
+			}
+		});
 		editorToolBar.add(editorWordWrap);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
 		editor_view.add(scrollPane_1, "cell 0 1,grow");
 		
-		editorArea = new JTextArea();
-		editorArea.setTabSize(4);
+		lblFilename = new JLabel("example.txt");
+		lblFilename.setFont(UIManager.getFont("InternalFrame.titleFont"));
+		scrollPane_1.setColumnHeaderView(lblFilename);
+		
+		editorArea = new JTextPane();
 		editorArea.setFont(new Font("Courier New", Font.PLAIN, 13));
-		editorArea.setWrapStyleWord(true);
 		editorArea.getDocument().addDocumentListener(new DocumentListener() {
+			/**
+			 * Track changes made to the currently open document
+			 */
 			@Override
 			public void changedUpdate(DocumentEvent arg0) {
 				unsavedChanges = true;
+				
 			}
+
 			@Override
 			public void insertUpdate(DocumentEvent arg0) {
 				unsavedChanges = true;
+				
 			}
+
 			@Override
 			public void removeUpdate(DocumentEvent arg0) {
 				unsavedChanges = true;
+				
 			}
+			
 		});
 		editorArea.addCaretListener(new CaretListener() {
 			/**
 			 * Update caret status bar in the editor tab
 			 */
-			public void caretUpdate(CaretEvent arg0)
-			{
-				JTextArea area = (JTextArea)arg0.getSource();
+			@Override
+			public void caretUpdate(CaretEvent arg0) {
+				JEditorPane area = (JEditorPane)arg0.getSource();
 				
 				int line = 1, col = 1;
-				String label = "ERROR";
+				String label = "ERROR - CURRENTLY UNIMPLEMENTED";
 				
-				try
-				{
-					int cpos = area.getCaretPosition();
-					line = area.getLineOfOffset(cpos);
-					col = cpos - area.getLineStartOffset(line);
-					line++;
-					label = "Line " + line + " | Col " + col;
-				}
-				catch (BadLocationException e){ e.printStackTrace(); }
+				//TODO return to caret position display eventually
+				/*
+				int cpos = area.getCaretPosition();
+				Element e = area.getDocument().getDefaultRootElement();
+				line = e.getElementIndex(cpos) + 1;
+				col = e.getElement(line - 1).getStartOffset();
+				label = "Line " + line + " | Col " + col;
+				*/
 				
 				lblCursorposdisplay.setText(label);
 			}
+			
 		});
 		scrollPane_1.setViewportView(editorArea);
-		
-		lblFilename = new JLabel("example.txt");
-		lblFilename.setFont(UIManager.getFont("InternalFrame.titleFont"));
-		scrollPane_1.setColumnHeaderView(lblFilename);
 		
 		lblCursorposdisplay = new JLabel("Line 1 | Col 0");
 		lblCursorposdisplay.setFont(UIManager.getFont("InternalFrame.titleFont"));
@@ -470,17 +456,25 @@ public class MainWindow {
 	}
 	
 	/**
+	 * Set word wrapping for the indicated JTextComponent
+	 */
+	private void setWordWrap(JTextComponent area, boolean state)
+	{
+		//TODO ???
+	}
+	
+	/**
 	 * Change the font size of a text area
 	 */
-	private void setFontSize(JTextArea area, int size)
+	private void setFontSize(JTextComponent area, int size)
 	{
-		area.setFont(area.getFont().deriveFont(size));
+		area.setFont(area.getFont().deriveFont((float)size));
 	}
 	
 	/**
 	 * Save the currentBatch. If there is no currentBatch, run saveAs()
 	 */
-	private void save(File defaultFile, JTextArea source)
+	private void save(File defaultFile, String source)
 	{
 		if(defaultFile == null)
 		{
@@ -492,7 +486,7 @@ public class MainWindow {
 		try
 		{
 			BufferedWriter writer = new BufferedWriter(new FileWriter(defaultFile));
-			writer.write(source.getText());
+			writer.write(source);
 			writer.close();
 		}
 		catch (IOException ioe){ ioe.printStackTrace(); }
@@ -501,7 +495,7 @@ public class MainWindow {
 	/**
 	 * Save the contents of editorArea to a file in the file system
 	 */
-	private File saveAs(JTextPane source)
+	private File saveAs(String source)
 	{
 		//user defines save file name and directory
 		JFileChooser chooser = new JFileChooser();
@@ -517,7 +511,7 @@ public class MainWindow {
 		try
 		{
 			BufferedWriter writer = new BufferedWriter(new FileWriter(f));
-			writer.write(source.getText());
+			writer.write(source);
 			writer.close();
 		}
 		catch (IOException ioe){ ioe.printStackTrace(); }
@@ -552,7 +546,7 @@ public class MainWindow {
 			{
 			case JOptionPane.YES_OPTION:
 				//save the contents of editorArea
-				save(currentBatch, editorArea);
+				save(currentBatch, editorArea.getText());
 				unsavedChanges = false;
 				break;
 				
@@ -574,22 +568,5 @@ public class MainWindow {
 	{
 		outputArea.setText(outputArea.getText() + inputLine.getText() + "\n");
 		inputLine.setText("");
-	}
-	private static void addPopup(Component component, final JPopupMenu popup) {
-		component.addMouseListener(new MouseAdapter() {
-			public void mousePressed(MouseEvent e) {
-				if (e.isPopupTrigger()) {
-					showMenu(e);
-				}
-			}
-			public void mouseReleased(MouseEvent e) {
-				if (e.isPopupTrigger()) {
-					showMenu(e);
-				}
-			}
-			private void showMenu(MouseEvent e) {
-				popup.show(e.getComponent(), e.getX(), e.getY());
-			}
-		});
 	}
 }
