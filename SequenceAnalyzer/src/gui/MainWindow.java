@@ -63,10 +63,6 @@ public class MainWindow {
 	//A listener that raises the unsavedChanges flag
 	private DocumentListener changesListener;
 	
-	//A list of the commands previously entered into the CLI
-	private ArrayList<String> history;
-	private int historyPointer;
-	
 	private JFrame frmStringSequenceAnalyzer;
 	private JTextField inputLine;
 	private JButton btnEnter;
@@ -127,9 +123,8 @@ public class MainWindow {
 			}
 		};
 		
-		history = new ArrayList<String>();
-		history.add("");
-		historyPointer = 0;
+		//Create a Console singleton if one has not already been instantiated
+		Console.instance();
 	}
 
 	/**
@@ -369,22 +364,10 @@ public class MainWindow {
 					sendInToOut();
 				
 				if(e.getKeyCode() == KeyEvent.VK_UP)
-				{
-					historyPointer--;
-					if(historyPointer < 0)
-						historyPointer = 0;
-					
-					inputLine.setText(history.get(historyPointer));
-				}
+					inputLine.setText(Console.instance().navigateHistory(-1));
 				
 				if(e.getKeyCode() == KeyEvent.VK_DOWN)
-				{
-					historyPointer++;
-					if(historyPointer > history.size() - 1)
-						historyPointer = history.size() - 1;
-					
-					inputLine.setText(history.get(historyPointer));
-				}
+					inputLine.setText(Console.instance().navigateHistory(1));
 			}
 		});
 		cli_view.add(inputLine, "cell 0 3 2 1,grow");
@@ -597,8 +580,7 @@ public class MainWindow {
 	private void sendInToOut()
 	{
 		outputArea.setText(outputArea.getText() + inputLine.getText() + "\n");
-		history.add(history.size() - 1, inputLine.getText());
-		historyPointer = history.size() - 1;
+		Console.instance().addToHistory(inputLine.getText());
 		inputLine.setText("");
 	}
 }
