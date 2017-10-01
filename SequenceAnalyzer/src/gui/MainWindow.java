@@ -124,7 +124,7 @@ public class MainWindow {
 		};
 		
 		//Create a Console singleton if one has not already been instantiated
-		Console.instance();
+		Console.instance().setFront(this);
 	}
 
 	/**
@@ -579,8 +579,18 @@ public class MainWindow {
 	//TODO remove debug
 	private void sendInToOut()
 	{
-		outputArea.setText(outputArea.getText() + inputLine.getText() + "\n");
+		if(!Console.instance().processInput(inputLine.getText(), outputArea.getText()))
+			outputArea.setText(outputArea.getText() + inputLine.getText() + "\n");
 		Console.instance().addToHistory(inputLine.getText());
 		inputLine.setText("");
+	}
+	
+	/**
+	 * Get the text in the output window
+	 * @return A reference to the String that represents the output window
+	 */
+	public void clearCLIOut()
+	{
+		outputArea.setText("");
 	}
 }
