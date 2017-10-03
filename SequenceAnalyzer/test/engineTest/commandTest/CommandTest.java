@@ -1,4 +1,4 @@
-package engineTest;
+package engineTest.commandTest;
 
 import static org.junit.Assert.*;
 

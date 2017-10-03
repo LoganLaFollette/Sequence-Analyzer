@@ -1,17 +1,15 @@
-package engineTest;
+package engineTest.PredefinedFunctionsTest;
 
 import static org.junit.Assert.*;
-
 import org.junit.Test;
+import engine.PredefinedFunctions.CuttingTimes;
 
-import engine.PredefinedFunctions;
-
-public class PredefinedFunctionsTest {
+public class CuttingTimesTest {
 
 	@Test
 	public void test() {
 		
-		PredefinedFunctions tester = new PredefinedFunctions();
+		CuttingTimes tester = new CuttingTimes();
 		
 		int[] calcCuttingX = tester.cuttingTimes("1011011");
 		int[] actualCuttingX = new int[]{1,2,4,5,7};
