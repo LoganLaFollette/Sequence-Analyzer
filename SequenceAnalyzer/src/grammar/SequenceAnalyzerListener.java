@@ -17,6 +17,46 @@ public interface SequenceAnalyzerListener extends ParseTreeListener {
 	 */
 	void exitInit(SequenceAnalyzerParser.InitContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link SequenceAnalyzerParser#cmd}.
+	 * @param ctx the parse tree
+	 */
+	void enterCmd(SequenceAnalyzerParser.CmdContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SequenceAnalyzerParser#cmd}.
+	 * @param ctx the parse tree
+	 */
+	void exitCmd(SequenceAnalyzerParser.CmdContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link SequenceAnalyzerParser#vardef}.
+	 * @param ctx the parse tree
+	 */
+	void enterVardef(SequenceAnalyzerParser.VardefContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SequenceAnalyzerParser#vardef}.
+	 * @param ctx the parse tree
+	 */
+	void exitVardef(SequenceAnalyzerParser.VardefContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link SequenceAnalyzerParser#strcmd}.
+	 * @param ctx the parse tree
+	 */
+	void enterStrcmd(SequenceAnalyzerParser.StrcmdContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SequenceAnalyzerParser#strcmd}.
+	 * @param ctx the parse tree
+	 */
+	void exitStrcmd(SequenceAnalyzerParser.StrcmdContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link SequenceAnalyzerParser#predef}.
+	 * @param ctx the parse tree
+	 */
+	void enterPredef(SequenceAnalyzerParser.PredefContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SequenceAnalyzerParser#predef}.
+	 * @param ctx the parse tree
+	 */
+	void exitPredef(SequenceAnalyzerParser.PredefContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link SequenceAnalyzerParser#func}.
 	 * @param ctx the parse tree
 	 */
