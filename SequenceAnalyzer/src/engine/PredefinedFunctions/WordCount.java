@@ -1,4 +1,4 @@
-package engine;
+package engine.PredefinedFunctions;
 
 import java.util.*;
 
@@ -18,8 +18,8 @@ public class WordCount
 		int newStartingIndex = 0;
 		int newEndingIndex = subWordLength;
 		
-                //Goes through the word and finds each subword starting at the beginning index 
-                //and ending at the subWordLength, then realigns the indices for the next subwords
+        //Goes through the word and finds each subword starting at the beginning index 
+        //and ending at the subWordLength, then realigns the indices for the next subwords
 		for (int i = 0; i < word.length(); i++)
 		{
 			subWord = word.substring(newStartingIndex, newEndingIndex);

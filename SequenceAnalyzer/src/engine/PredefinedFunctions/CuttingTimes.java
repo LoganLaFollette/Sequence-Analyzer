@@ -1,9 +1,9 @@
-package engine;
+package engine.PredefinedFunctions;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PredefinedFunctions {
+public class CuttingTimes {
 	
 	
 	/**

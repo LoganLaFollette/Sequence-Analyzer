@@ -1,6 +1,10 @@
-package engine;
+package engine.PredefinedFunctions;
 
-/*  Star Product Example
+import engine.CONSTS;
+
+/*
+*   Star Product Example
+*
 *   (Odd example)
 *   s1 = 10101  (odd number of 1s)
 *   s2 = 1001   (Flip each bit)
@@ -12,11 +16,12 @@ package engine;
 *   s2 = 00010  (Doesn't need to flip anything)
 *
 *   sFinal = 10110101011010101101010110111011010  (Copies of s2 inbetween whole copies of s1)
-* /
+* 
+ */
 
 public class StarProduct
 {
-    public static final String ERROR = "Invalid input";
+    
 	
 	public static String starProduct(String star1, String star2)
 	{		
@@ -33,7 +38,7 @@ public class StarProduct
 			}
 			else if (star1.charAt(i) != '0')
 			{
-				return ERROR;
+				return CONSTS.ERROR;
 			}
 		}
     		//Goes through star2 to make sure there aren't any inconsistencies
@@ -41,7 +46,7 @@ public class StarProduct
 		{
 			if (star2.charAt(i) != '1' && star2.charAt(i) != '0')
 			{
-				return ERROR;
+				return CONSTS.ERROR;
 			}
 		}
     

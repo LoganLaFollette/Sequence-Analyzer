@@ -2,30 +2,34 @@ package engine;
 
 import java.util.*;
 
+/**
+ * Creates a unique symbol to be contained in the symbol tree every time
+ * the method is called.  
+ * 
+ * @author 
+ *
+ */
 public class UniqueSymbolGenerator {
-	protected Map<String, String> varNames = new HashMap<>(); //Stores Variables and their values
-//	int symbolNum = 0;
 	
-	//Generates a blank variable
-	public void Generate()
-	{
+	protected Map<Integer, String> varNames = new HashMap<>(); //Stores Variables and their values
+	
+	
+	//default constructor
+	public UniqueSymbolGenerator() {
+		
+	}
+	
+	//basic generate command with no arguments
+	public void Generate() {
 		Generate("");
 	}
-	//Generates a variable with the given value
-	public void Generate(String input)
+	
+	//overloaded Generate() with String argument 
+	public String Generate(String input)
 	{
-		varNames.put(SymbolGen(), input);
+		varNames.put(varNames.size(), input);
+		
+		return CONSTS.SYMBOL_PREFIX + varNames.size();
 	}	
 	
-//	public String SymbolGenerator() {
-//		String symbol = "_" + symbolNum;
-//		symbolNum++;
-//		return symbol;
-//	}	
-	
-	//Creates next unique variable name
-	public String SymbolGen()
-	{
-		return "_Var" + varNames.size();
-	}	
 }
