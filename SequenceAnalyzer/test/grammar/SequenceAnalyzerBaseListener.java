@@ -39,6 +39,18 @@ public class SequenceAnalyzerBaseListener implements SequenceAnalyzerListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterAssign(SequenceAnalyzerParser.AssignContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitAssign(SequenceAnalyzerParser.AssignContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterFile(SequenceAnalyzerParser.FileContext ctx) { }
 	/**
 	 * {@inheritDoc}

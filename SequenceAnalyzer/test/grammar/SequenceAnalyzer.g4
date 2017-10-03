@@ -3,6 +3,7 @@ grammar SequenceAnalyzer;
 //PARSER RULES
 init	:	func
 		|	expr
+		|	assign
 		|	ID
 		;
 func	:	ID file
@@ -12,9 +13,11 @@ func	:	ID file
 		|	ID '(' func ')'
 		|	'(' func ')'
 		;
+assign	:	ID ':=' expr;
 file	:	ID FILE_EXT ;
 expr	:   expr ('*'|'/') expr   
 		|   expr ('+'|'-') expr   
+		|	USER_ALPHA
 		|   INT                                       
 		|   '(' expr ')'         
 		;
@@ -23,6 +26,7 @@ expr	:   expr ('*'|'/') expr
 //LEXER RULES
 ID  	:   LETTER (LETTER | INT)* ;
 INT 	:   [0-9]+ ;         // match integers
+USER_ALPHA	:	[0-1]+;		 // user defined
 FILE_EXT:	'.' ID* ;
 LETTER	: 	[a-zA-Z] ;
 NEWLINE	:	'\r'? '\n' ;     // return newlines to parser (end-statement signal)

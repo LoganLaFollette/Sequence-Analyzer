@@ -27,6 +27,16 @@ public interface SequenceAnalyzerListener extends ParseTreeListener {
 	 */
 	void exitFunc(SequenceAnalyzerParser.FuncContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link SequenceAnalyzerParser#assign}.
+	 * @param ctx the parse tree
+	 */
+	void enterAssign(SequenceAnalyzerParser.AssignContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SequenceAnalyzerParser#assign}.
+	 * @param ctx the parse tree
+	 */
+	void exitAssign(SequenceAnalyzerParser.AssignContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link SequenceAnalyzerParser#file}.
 	 * @param ctx the parse tree
 	 */
