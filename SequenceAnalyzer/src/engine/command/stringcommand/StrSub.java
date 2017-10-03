@@ -2,6 +2,11 @@ package engine.command.stringcommand;
 
 import engine.command.Command;
 
+/**
+ * 
+ * @author Logan LaFollette
+ *
+ */
 public class StrSub extends Command {
 
 	public StrSub() {
