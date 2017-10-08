@@ -7,6 +7,16 @@ import org.antlr.v4.runtime.tree.ParseTreeListener;
  */
 public interface SequenceAnalyzerListener extends ParseTreeListener {
 	/**
+	 * Enter a parse tree produced by {@link SequenceAnalyzerParser#prog}.
+	 * @param ctx the parse tree
+	 */
+	void enterProg(SequenceAnalyzerParser.ProgContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SequenceAnalyzerParser#prog}.
+	 * @param ctx the parse tree
+	 */
+	void exitProg(SequenceAnalyzerParser.ProgContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link SequenceAnalyzerParser#init}.
 	 * @param ctx the parse tree
 	 */
@@ -57,6 +67,42 @@ public interface SequenceAnalyzerListener extends ParseTreeListener {
 	 */
 	void exitPredef(SequenceAnalyzerParser.PredefContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code printExpr}
+	 * labeled alternative in {@link SequenceAnalyzerParser#assignment}.
+	 * @param ctx the parse tree
+	 */
+	void enterPrintExpr(SequenceAnalyzerParser.PrintExprContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code printExpr}
+	 * labeled alternative in {@link SequenceAnalyzerParser#assignment}.
+	 * @param ctx the parse tree
+	 */
+	void exitPrintExpr(SequenceAnalyzerParser.PrintExprContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code assign}
+	 * labeled alternative in {@link SequenceAnalyzerParser#assignment}.
+	 * @param ctx the parse tree
+	 */
+	void enterAssign(SequenceAnalyzerParser.AssignContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code assign}
+	 * labeled alternative in {@link SequenceAnalyzerParser#assignment}.
+	 * @param ctx the parse tree
+	 */
+	void exitAssign(SequenceAnalyzerParser.AssignContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code blank}
+	 * labeled alternative in {@link SequenceAnalyzerParser#assignment}.
+	 * @param ctx the parse tree
+	 */
+	void enterBlank(SequenceAnalyzerParser.BlankContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code blank}
+	 * labeled alternative in {@link SequenceAnalyzerParser#assignment}.
+	 * @param ctx the parse tree
+	 */
+	void exitBlank(SequenceAnalyzerParser.BlankContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link SequenceAnalyzerParser#func}.
 	 * @param ctx the parse tree
 	 */
@@ -66,16 +112,6 @@ public interface SequenceAnalyzerListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitFunc(SequenceAnalyzerParser.FuncContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link SequenceAnalyzerParser#assign}.
-	 * @param ctx the parse tree
-	 */
-	void enterAssign(SequenceAnalyzerParser.AssignContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link SequenceAnalyzerParser#assign}.
-	 * @param ctx the parse tree
-	 */
-	void exitAssign(SequenceAnalyzerParser.AssignContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link SequenceAnalyzerParser#file}.
 	 * @param ctx the parse tree
@@ -87,13 +123,63 @@ public interface SequenceAnalyzerListener extends ParseTreeListener {
 	 */
 	void exitFile(SequenceAnalyzerParser.FileContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link SequenceAnalyzerParser#expr}.
+	 * Enter a parse tree produced by the {@code parens}
+	 * labeled alternative in {@link SequenceAnalyzerParser#expr}.
 	 * @param ctx the parse tree
 	 */
-	void enterExpr(SequenceAnalyzerParser.ExprContext ctx);
+	void enterParens(SequenceAnalyzerParser.ParensContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link SequenceAnalyzerParser#expr}.
+	 * Exit a parse tree produced by the {@code parens}
+	 * labeled alternative in {@link SequenceAnalyzerParser#expr}.
 	 * @param ctx the parse tree
 	 */
-	void exitExpr(SequenceAnalyzerParser.ExprContext ctx);
+	void exitParens(SequenceAnalyzerParser.ParensContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code MulDiv}
+	 * labeled alternative in {@link SequenceAnalyzerParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterMulDiv(SequenceAnalyzerParser.MulDivContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code MulDiv}
+	 * labeled alternative in {@link SequenceAnalyzerParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitMulDiv(SequenceAnalyzerParser.MulDivContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code AddSub}
+	 * labeled alternative in {@link SequenceAnalyzerParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterAddSub(SequenceAnalyzerParser.AddSubContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code AddSub}
+	 * labeled alternative in {@link SequenceAnalyzerParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitAddSub(SequenceAnalyzerParser.AddSubContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code id}
+	 * labeled alternative in {@link SequenceAnalyzerParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterId(SequenceAnalyzerParser.IdContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code id}
+	 * labeled alternative in {@link SequenceAnalyzerParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitId(SequenceAnalyzerParser.IdContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code int}
+	 * labeled alternative in {@link SequenceAnalyzerParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterInt(SequenceAnalyzerParser.IntContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code int}
+	 * labeled alternative in {@link SequenceAnalyzerParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitInt(SequenceAnalyzerParser.IntContext ctx);
 }

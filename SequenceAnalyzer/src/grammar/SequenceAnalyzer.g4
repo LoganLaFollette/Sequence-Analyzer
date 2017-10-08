@@ -1,8 +1,11 @@
 grammar SequenceAnalyzer; 
 
 //PARSER RULES
-init	:	func
-		|	cmd
+prog	:	init+;
+
+init	:	cmd //need this?
+		//|	assignment
+		|	func
 		|	expr
 		|	ID
 		;
@@ -10,7 +13,7 @@ cmd		:	vardef
 		|	strcmd
 		|	predef
 		;
-vardef	:	assign
+vardef	:	assignment
 		//|	alphadef
 		;
 strcmd	:	'sub'
@@ -23,7 +26,14 @@ predef	:	'ct'
 		|	'wordcount'
 		|	'concat'
 		;
-func	:	cmd file
+		
+assignment	:	expr NEWLINE        # printExpr
+		|	ID '=' expr NEWLINE  	# assign
+		|   NEWLINE                 # blank
+		;
+		
+func	:	assignment
+		|	cmd file
 		|	cmd file file
 		|	cmd '(' file ')'
 		|	cmd '(' file ')' '(' file ')'
@@ -36,21 +46,28 @@ func	:	cmd file
 		;
 		
 
-assign	:	ID ':=' expr;
-file	:	ID FILE_EXT ;
-expr	:   expr ('*'|'/') expr   
-		|   expr ('+'|'-') expr   
-		|	USER_ALPHA
-		|   INT                                       
-		|   '(' expr ')'         
+
+
+file	:	ID FILE_EXT;		 
+
+expr	:   expr op=('*'|'/') expr # MulDiv  
+		|   expr op=('+'|'-') expr # AddSub  
+		/*|	USER_ALPHA			   # UserAlpha*/
+		|	ID					   # id
+		|   INT                    # int                   
+		|   '(' expr ')'           # parens
 		;
 
 
 //LEXER RULES
-ID  	:   LETTER (LETTER | INT)* ;
+ID  	:   LETTER /*(LETTER | INT)**/ ;
 INT 	:   [0-9]+ ;         // match integers
 USER_ALPHA	:	[0-1]+;		 // user defined
 FILE_EXT:	'.' ID* ;
+MUL :   '*' ; // assigns token name to '*' used above in grammar
+DIV :   '/' ;
+ADD :   '+' ;
+SUB :   '-' ;
 LETTER	: 	[a-zA-Z]+ ;
 NEWLINE	:	'\r'? '\n' ;     // return newlines to parser (end-statement signal)
 LN_COMMENT :   '//' .*? '\n' -> skip;
