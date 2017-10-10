@@ -4,6 +4,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.swing.text.JTextComponent;
+
 import gui.commands.Command;
 import gui.commands.CommandException;
 
@@ -56,7 +58,7 @@ public final class Console
 	
 	// The history of commands entered in this session
 	private ArrayList<String> history;
-	private int historyPointer;
+	private int historyIndex;
 	
 	// The GUI the Console operates upon
 	private MainWindow front;
@@ -79,7 +81,7 @@ public final class Console
 	private Console()
 	{
 		history = new ArrayList<String>();
-		historyPointer = 0;
+		historyIndex = 0;
 		
 		//add an empty entry to the history so that a clear line can be selected
 		history.add("");
@@ -92,7 +94,7 @@ public final class Console
 	 * @param input - the input string
 	 * @return A boolean indicating whether a command was run
 	 */
-	public boolean processInput(String input, String output)
+	public boolean processInput(String input, JTextComponent output)
 	{
 		if(!input.startsWith(COMMAND_FLAG) || output == null)
 			return false;
@@ -103,11 +105,11 @@ public final class Console
 		{
 			try
 			{
-				output += commandList.get(args[0]).execute(args);
+				output.setText(output.getText() + commandList.get(args[0]).execute(args) + "\n");
 			}
 			catch(CommandException ce)
 			{
-				output += "ERROR: " + ce.getMessage();
+				output.setText(output.getText() + "ERROR: " + ce.getMessage() + "\n");
 			}
 			return true;
 		}
@@ -122,7 +124,7 @@ public final class Console
 	public void addToHistory(String entry)
 	{
 		history.add(history.size() - 1, entry);
-		historyPointer = history.size() - 1;
+		historyIndex = history.size() - 1;
 	}
 	
 	/**
@@ -132,13 +134,13 @@ public final class Console
 	 */
 	public String navigateHistory(int n)
 	{
-		historyPointer += Integer.signum(n);
-		if(historyPointer < 0)
-			historyPointer = 0;
-		else if(historyPointer > history.size() - 1)
-			historyPointer = history.size() - 1;
+		historyIndex += Integer.signum(n);
+		if(historyIndex < 0)
+			historyIndex = 0;
+		else if(historyIndex > history.size() - 1)
+			historyIndex = history.size() - 1;
 		
-		return history.get(historyPointer);
+		return history.get(historyIndex);
 	}
 	
 	/**

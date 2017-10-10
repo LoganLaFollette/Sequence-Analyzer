@@ -49,12 +49,14 @@ import javax.swing.JEditorPane;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
 
-public class MainWindow {
+public class MainWindow
+{
+	public static boolean DEBUG;
 
 	//The file most recently opened/saved batch
 	private File currentBatch;
 	
-	//A flag that indicates changes made to currentBatch
+	//A flag that indicates changes have been made to currentBatch
 	private boolean unsavedChanges;
 	
 	//The file to which output dumps will be saved
@@ -78,7 +80,11 @@ public class MainWindow {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args)
+	{
+		if(args.length > 0)
+			DEBUG = args[0].equalsIgnoreCase("debug");
+		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -579,7 +585,7 @@ public class MainWindow {
 	//TODO remove debug
 	private void sendInToOut()
 	{
-		if(!Console.instance().processInput(inputLine.getText(), outputArea.getText()))
+		if(!Console.instance().processInput(inputLine.getText(), outputArea))
 			outputArea.setText(outputArea.getText() + inputLine.getText() + "\n");
 		Console.instance().addToHistory(inputLine.getText());
 		inputLine.setText("");
