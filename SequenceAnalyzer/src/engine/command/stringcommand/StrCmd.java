@@ -1,20 +1,21 @@
 package engine.command.stringcommand;
 
+import engine.command.Command;
+
 /**
  * 
  * @author Logan LaFollette
  *
  */
-public class StrCompare extends StrCmd {
-
-	public StrCompare() {
-		
-	}
-
+public abstract class StrCmd extends Command {
+	
 	@Override
 	public void execute() {
 		
 		
 	}
-
+	
+	public StrCmd() {
+		
+	}
 }

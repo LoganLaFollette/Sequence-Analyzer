@@ -1,20 +1,21 @@
 package engine.command.vardef;
 
+import engine.command.Command;
+
 /**
  * 
  * @author Logan LaFollette
  *
  */
-public class AlphabetDef extends VarDef {
-
-	public AlphabetDef() {
+public abstract class VarDef extends Command {
+	
+	public VarDef() {
 		
 	}
-
+	
 	@Override
 	public void execute() {
 		
 		
 	}
-
 }
