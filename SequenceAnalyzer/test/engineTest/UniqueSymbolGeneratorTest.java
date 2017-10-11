@@ -12,7 +12,7 @@ public class UniqueSymbolGeneratorTest {
 		
 		for (int i=1;i<=5;i++) {
 			tester.Generate();
-			assertEquals("Testing symbol generator: ","_Var"+i,tester.SymbolGen());
+			assertEquals("Testing symbol generator: ","_Var"+i,tester.Generate("test"));
 			
 		}
 		
