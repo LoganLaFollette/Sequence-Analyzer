@@ -7,20 +7,21 @@ import engine.command.ExpressionCmd;
  * 
  * @author Logan LaFollette
  * @param <T>
+ * @param <T>
  *
  */
-@SuppressWarnings("rawtypes")
-public class ShiftMaximalityCmd extends PredefinedFunctionCmd {
+
+public class ShiftMaximalityCmd extends PredefinedFunctionCmd<ShiftMaximalityCmd> {
 
 	public ShiftMaximalityCmd() {
 		
 	}
 	
 	@Override
-	public Object execute(ExpressionCmd exp) {
+	public void execute(ExpressionCmd exp) {
 		
 		ShiftMaximality sm = new ShiftMaximality();
-		return sm.shiftMaximal(exp.getExpression());	
+		//result sm.shiftMaximal(exp.getExpression());	
 	}
 
 }

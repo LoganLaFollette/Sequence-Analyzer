@@ -8,7 +8,8 @@ import engine.command.ExpressionCmd;
  * @author Logan LaFollette
  *
  */
-public abstract class PredefinedFunctionCmd<T> extends Command<T>  {
+@SuppressWarnings("rawtypes")
+public abstract class PredefinedFunctionCmd<T> extends Command<PredefinedFunctionCmd>  {
 	
 	protected ExpressionCmd _exp;
 
@@ -17,7 +18,7 @@ public abstract class PredefinedFunctionCmd<T> extends Command<T>  {
 	}
 
 	@Override
-	public abstract T execute(ExpressionCmd exp);
+	public abstract void execute(ExpressionCmd exp);
 	
 	
 }

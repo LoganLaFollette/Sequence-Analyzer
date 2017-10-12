@@ -16,10 +16,10 @@ public class CuttingTimesCmd extends PredefinedFunctionCmd {
 	}
 
 	@Override
-	public Object execute(ExpressionCmd exp) {
+	public void execute(ExpressionCmd exp) {
 		
 		CuttingTimes ct = new CuttingTimes();
-		return ct.cuttingTimes(exp.getExpression());
+		//result ct.cuttingTimes(exp.getExpression());
 	}
 
 }

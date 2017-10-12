@@ -10,5 +10,5 @@ public abstract class Command<T>
 	/**
 	 * Individually defined by all subclasses of Command
 	 */
-	abstract public T execute(ExpressionCmd exp);
+	abstract public void execute(ExpressionCmd exp);
 }
