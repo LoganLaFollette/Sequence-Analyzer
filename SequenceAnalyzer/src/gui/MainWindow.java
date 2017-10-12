@@ -585,7 +585,7 @@ public class MainWindow
 	//TODO remove debug
 	private void sendInToOut()
 	{
-		if(!Console.instance().processInput(inputLine.getText(), outputArea))
+		if(!Console.instance().processInput(inputLine.getText()))
 			outputArea.setText(outputArea.getText() + inputLine.getText() + "\n");
 		Console.instance().addToHistory(inputLine.getText());
 		inputLine.setText("");

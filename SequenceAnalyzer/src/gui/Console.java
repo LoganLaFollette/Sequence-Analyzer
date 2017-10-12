@@ -1,13 +1,9 @@
 package gui;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import javax.swing.text.JTextComponent;
-
-import gui.commands.Command;
-import gui.commands.CommandException;
+import gui.commands.*;
 
 public final class Console
 {
@@ -22,36 +18,12 @@ public final class Console
 	private static HashMap<String, Command> commandList;
 	static
 	{
+		//build the command list
 		commandList = new HashMap<String, Command>();
-		String commandDir = System.getProperty("user.dir") 
-				+ File.separator + "src" 
-				+ File.separator + "gui" 
-				+ File.separator + "commands";
 		
-		System.out.println(commandDir); //DEBUG
-		
-		File[] dir = new File(commandDir).listFiles();
-		for(File f : dir)
-		{
-			if(!f.isFile())
-				continue;
-			
-			String filename = f.getName().substring(0, f.getName().lastIndexOf('.'));
-			
-			if(filename.equals("Command") || filename.equals("CommandException"))
-				continue;
-			
-			Command c = null;
-			try
-			{
-				c = (Command)Class.forName("gui.commands."+filename).newInstance();
-			}
-			catch (InstantiationException e) { e.printStackTrace(); }
-			catch (IllegalAccessException e) { e.printStackTrace(); }
-			catch (ClassNotFoundException e) { e.printStackTrace(); }
-			
-			commandList.put(c.getInvocation(), c);
-		}
+		commandList.put("clear", new ClearCommand());
+		commandList.put("debug", new DebugCommand());
+		commandList.put("exit", new ExitCommand());
 	}
 	
 	/* Instance Vars */
@@ -94,27 +66,28 @@ public final class Console
 	 * @param input - the input string
 	 * @return A boolean indicating whether a command was run
 	 */
-	public boolean processInput(String input, JTextComponent output)
+	public boolean processInput(String input)
 	{
-		if(!input.startsWith(COMMAND_FLAG) || output == null)
+		if(!input.startsWith(COMMAND_FLAG))
 			return false;
 		
 		String[] args = input.substring(1).split(" ");
+		
+		int success = 2;
 		
 		if(commandList.containsKey(args[0]))
 		{
 			try
 			{
-				output.setText(output.getText() + commandList.get(args[0]).execute(args) + "\n");
+				success =  commandList.get(args[0]).execute(args);
 			}
-			catch(CommandException ce)
+			catch(Exception e)
 			{
-				output.setText(output.getText() + "ERROR: " + ce.getMessage() + "\n");
+				//TODO print error message out to console
 			}
-			return true;
 		}
 		
-		return false;
+		return success == 0;
 	}
 	
 	/**
