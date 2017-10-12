@@ -18,9 +18,6 @@ public abstract class PredefinedFunctionCmd<T> extends Command<T>  {
 
 	@Override
 	public abstract T execute(ExpressionCmd exp);
-
-	@Override
-	public abstract T execute();
 	
 	
 }

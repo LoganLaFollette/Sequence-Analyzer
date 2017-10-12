@@ -9,25 +9,18 @@ import engine.command.ExpressionCmd;
  * @param <T>
  *
  */
-public class ShiftMaximalityCmd<T> extends PredefinedFunctionCmd<T> {
+@SuppressWarnings("rawtypes")
+public class ShiftMaximalityCmd extends PredefinedFunctionCmd {
 
 	public ShiftMaximalityCmd() {
 		
 	}
 	
-
 	@Override
-	public void execute(ExpressionCmd exp) {
-		 ShiftMaximality.shiftMaximal(exp);
+	public Object execute(ExpressionCmd exp) {
 		
+		ShiftMaximality sm = new ShiftMaximality();
+		return sm.shiftMaximal(exp.getExpression());	
 	}
-
-
-	@Override
-	public T execute() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 
 }

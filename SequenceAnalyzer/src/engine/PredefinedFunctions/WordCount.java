@@ -11,7 +11,7 @@ import java.util.*;
 
 public class WordCount
 {
-  public static Map<String, Integer> wordCount(String word, int subWordLength) 
+  public Map<String, Integer> wordCount(String word, int subWordLength) 
   {
 		Map<String, Integer> map = new HashMap<String, Integer>();
 		String subWord = "";
