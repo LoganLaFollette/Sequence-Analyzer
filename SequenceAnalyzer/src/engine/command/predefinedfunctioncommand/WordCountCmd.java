@@ -3,7 +3,9 @@ package engine.command.predefinedfunctioncommand;
 import java.util.Map;
 
 import engine.PredefinedFunctions.WordCount;
-import engine.command.ExpressionCmd;
+import engine.command.CommandExpression;
+import engine.command.CommandResponse;
+
 
 /**
  * 
@@ -12,19 +14,24 @@ import engine.command.ExpressionCmd;
  * @param <T>
  *
  */
-public class WordCountCmd<T> extends PredefinedFunctionCmd {
+public class WordCountCmd extends PredefinedFunctionCmd {
 
 	public WordCountCmd() {
 		// TODO Auto-generated constructor stub
 	}
 	
 	@Override 
-	public Map<String, Integer> execute(ExpressionCmd exp) {
+	public CommandResponse execute(CommandExpression exp) {
+		
+		String s = "";
+		int i = 0;
 		
 		WordCount wc = new WordCount();
 		
 		//second parameter is subword length, not sure how this will be extracted from the expression command
-		return wc.wordCount(exp.getExpression(), );
+		CommandResponse resp = new CommandResponse(wc.wordCount(s, i));
+		
+		return resp;
 		
 		
 		

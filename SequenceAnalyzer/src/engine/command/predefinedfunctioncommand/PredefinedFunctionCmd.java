@@ -1,24 +1,23 @@
 package engine.command.predefinedfunctioncommand;
 
 import engine.command.Command;
-import engine.command.ExpressionCmd;
+import engine.command.CommandExpression;
+import engine.command.CommandResponse;
 
 /**
  * 
  * @author Logan LaFollette
  *
  */
-@SuppressWarnings("rawtypes")
-public abstract class PredefinedFunctionCmd<T> extends Command<PredefinedFunctionCmd>  {
+public abstract class PredefinedFunctionCmd extends Command<PredefinedFunctionCmd>  {
 	
-	protected ExpressionCmd _exp;
 
 	public PredefinedFunctionCmd() {
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
-	public abstract void execute(ExpressionCmd exp);
+	public abstract CommandResponse execute(CommandExpression cmd);
 	
 	
 }

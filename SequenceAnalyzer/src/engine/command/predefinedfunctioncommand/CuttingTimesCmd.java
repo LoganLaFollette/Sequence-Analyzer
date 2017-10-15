@@ -1,14 +1,14 @@
 package engine.command.predefinedfunctioncommand;
 
 import engine.PredefinedFunctions.CuttingTimes;
-import engine.command.ExpressionCmd;
+import engine.command.CommandExpression;
+import engine.command.CommandResponse;
 
 /**
  * 
  * @author Logan LaFollette
  *
  */
-@SuppressWarnings("rawtypes")
 public class CuttingTimesCmd extends PredefinedFunctionCmd {
 
 	public CuttingTimesCmd() {
@@ -16,10 +16,14 @@ public class CuttingTimesCmd extends PredefinedFunctionCmd {
 	}
 
 	@Override
-	public void execute(ExpressionCmd exp) {
+	public CommandResponse execute(CommandExpression cmd) {
 		
 		CuttingTimes ct = new CuttingTimes();
-		//result ct.cuttingTimes(exp.getExpression());
+		String a = "";
+		
+		CommandResponse resp = new CommandResponse(ct.cuttingTimes(a));
+		
+		return resp;
 	}
 
 }

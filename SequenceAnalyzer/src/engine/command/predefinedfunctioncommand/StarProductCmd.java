@@ -1,8 +1,8 @@
 package engine.command.predefinedfunctioncommand;
 
-import engine.PredefinedFunctions.CuttingTimes;
 import engine.PredefinedFunctions.StarProduct;
-import engine.command.ExpressionCmd;
+import engine.command.CommandExpression;
+import engine.command.CommandResponse;
 
 /**
  * 
@@ -16,11 +16,14 @@ public class StarProductCmd extends PredefinedFunctionCmd {
 	}
 
 	@Override
-	public Object execute(ExpressionCmd exp1) {
-		return exp1;
+	public CommandResponse execute(CommandExpression exp1) {
 		
-//		StarProduct sp = new StarProduct();
-//		return sp.starProduct(exp1.getExpression(), exp2.getExpression());
+		String b = "";
+		String c = "";
+		
+		StarProduct sp = new StarProduct();
+		CommandResponse resp = new CommandResponse(sp.starProduct(b,c));
+		return resp;
 	}
 
 }

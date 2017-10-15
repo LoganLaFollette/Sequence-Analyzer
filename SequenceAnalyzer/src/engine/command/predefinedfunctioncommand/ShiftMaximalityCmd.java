@@ -1,7 +1,8 @@
 package engine.command.predefinedfunctioncommand;
 
 import engine.PredefinedFunctions.ShiftMaximality;
-import engine.command.ExpressionCmd;
+import engine.command.CommandExpression;
+import engine.command.CommandResponse;
 
 /**
  * 
@@ -10,18 +11,23 @@ import engine.command.ExpressionCmd;
  * @param <T>
  *
  */
-
-public class ShiftMaximalityCmd extends PredefinedFunctionCmd<ShiftMaximalityCmd> {
+public class ShiftMaximalityCmd extends PredefinedFunctionCmd {
 
 	public ShiftMaximalityCmd() {
 		
 	}
 	
 	@Override
-	public void execute(ExpressionCmd exp) {
+	public CommandResponse execute(CommandExpression exp) {
 		
 		ShiftMaximality sm = new ShiftMaximality();
-		//result sm.shiftMaximal(exp.getExpression());	
+		
+		String a = "";
+		
+		CommandResponse resp = new CommandResponse(sm.shiftMaximal(a));
+		
+		return resp;
+		
 	}
 
 }
