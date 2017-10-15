@@ -1,8 +1,9 @@
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 import CommandObject.java;
+import java.util.Stack;
 
 public class CommandObjectVisitor extends SequenceAnalyzerBaseVisitor {
-	List<CommandObject> commandObjectList = new List<CommandObject>;
+	Stack<CommandObject> commandObjectStack = new Stack<CommandObject>;
 	public bool debugFlag = true;
 	
 	@Override
@@ -21,7 +22,7 @@ public class CommandObjectVisitor extends SequenceAnalyzerBaseVisitor {
 		}
 		
 		SubstitutionCommand subCommand = new SubstitutionCommand(target, replacement);
-		commandObjectList.add(subCommand);
+		commandObjectStack.push(subCommand);
 	}
 
 	@Override
@@ -40,7 +41,7 @@ public class CommandObjectVisitor extends SequenceAnalyzerBaseVisitor {
 		}
 		
 		CompareCommand cmpCommand = new CompareCommand(str1, str2);
-		commandObjectList.add(cmpCommand);
+		commandObjectStack.push(cmpCommand);
 	}
 
 	@Override
@@ -62,7 +63,7 @@ public class CommandObjectVisitor extends SequenceAnalyzerBaseVisitor {
 		}
 		
 		CuttingTimesCommand ctCommand = new CuttingTimesCommand(expr);
-		commandObjectList.add(ctCommand);
+		commandObjectStack.push(ctCommand);
 	}
 
 	@Override
@@ -74,7 +75,7 @@ public class CommandObjectVisitor extends SequenceAnalyzerBaseVisitor {
 		}
 		
 		CuttingTimesCommand ctCommand = new CuttingTimesCommand(expr);
-		commandObjectList.add(ctCommand);
+		commandObjectStack.push(ctCommand);
 	}
 
 	@Override
@@ -93,7 +94,7 @@ public class CommandObjectVisitor extends SequenceAnalyzerBaseVisitor {
 		}
 		
 		StarProductCommand spCommand = new StarProductCommand(str1, str2); 
-		commandObjectList.add(spCommand);
+		commandObjectStack.push(spCommand);
 	}
 
 	@Override
@@ -115,7 +116,7 @@ public class CommandObjectVisitor extends SequenceAnalyzerBaseVisitor {
 		}
 		
 		BuildCommand buildCommand = new BuildCommand(str);
-		commandObjectList.add(buildCommand);
+		commandObjectStack.push(buildCommand);
 	}
 
 	@Override
@@ -127,7 +128,7 @@ public class CommandObjectVisitor extends SequenceAnalyzerBaseVisitor {
 		}
 		
 		BuildCommand buildCommand = new BuildCommand(str);
-		commandObjectList.add(buildCommand);
+		commandObjectStack.push(buildCommand);
 	}
 
 	@Override
@@ -149,7 +150,7 @@ public class CommandObjectVisitor extends SequenceAnalyzerBaseVisitor {
 		}
 		
 		ShiftMaximalityCommand smCommand = new ShiftMaximalityCommand(operand);
-		commandObjectList.add(smCommand);
+		commandObjectStack.push(smCommand);
 	}
 
 	@Override
@@ -161,7 +162,7 @@ public class CommandObjectVisitor extends SequenceAnalyzerBaseVisitor {
 		}
 		
 		ShiftMaximalityCommand smCommand = new ShiftMaximalityCommand(operand);
-		commandObjectList.add(smCommand);
+		commandObjectStack.push(smCommand);
 	}
 
 	@Override
@@ -183,7 +184,7 @@ public class CommandObjectVisitor extends SequenceAnalyzerBaseVisitor {
 		}
 		
 		WordCountCommand wordcountCommand = new WordCountCommand(str);
-		commandObjectList.add(wordcountCommand);
+		commandObjectStack.push(wordcountCommand);
 	}
 
 	@Override
@@ -195,7 +196,7 @@ public class CommandObjectVisitor extends SequenceAnalyzerBaseVisitor {
 		}
 		
 		WordCountCommand wordcountCommand = new WordCountCommand(str);
-		commandObjectList.add(wordcountCommand);
+		commandObjectStack.push(wordcountCommand);
 	}
 
 	@Override
@@ -219,7 +220,7 @@ public class CommandObjectVisitor extends SequenceAnalyzerBaseVisitor {
 		}
 		
 		ConcatenationCommand concatCommand = new ConcatenationCommand(baseStr, concatStr);
-		commandObjectList.add(concatCommand);
+		commandObjectStack.push(concatCommand);
 	}
 	
 	@Override
@@ -235,7 +236,7 @@ public class CommandObjectVisitor extends SequenceAnalyzerBaseVisitor {
 		}
 		
 		ConcatenationCommand concatCommand = new ConcatenationCommand(baseStr, concatStr, index);
-		commandObjectList.add(concatCommand);
+		commandObjectStack.push(concatCommand);
 	}
 
 
