@@ -3,6 +3,8 @@ import org.antlr.v4.runtime.tree.ParseTree;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.Stack;
+import CommandObject.java;
 
 public class AntlrBridge{ 
 	public AntlrBridge(String input){
@@ -18,5 +20,7 @@ public class AntlrBridge{
 
 		CommandObjectVisitor coVisitor = new CommandObjectVisitor();
 		coVisitor.visit(tree);
+		
+		Stack<CommandObject> commandObjectStack = coVisitor.commandObjectStack;
 	}
 }

@@ -138,4 +138,4 @@ LETTER	: 	[a-zA-Z]+ ;		//defines letters as lowercase and uppercase
 NEWLINE	:	'\r'? '\n' ;    //return newlines to parser (end-statement signal)
 LN_COMMENT :   '//' .*? '\n' -> skip;	//skips single line comments
 COMMENT	:	'/*' .*? '*/' -> skip ;		//skips block comments
-WS  	:   [ \t]+ -> skip ; 			// toss out whitespace
+WS  	:   [ \t]+ -> skip ; 			/* toss out whitespace*/
