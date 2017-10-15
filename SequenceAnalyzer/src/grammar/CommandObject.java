@@ -180,3 +180,4 @@ public class ConcatenationCommand extends PredefinedFunctionCommand{
 		this.index = index;
 	}
 }
+
