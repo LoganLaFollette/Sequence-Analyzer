@@ -15,7 +15,7 @@ public class ClearCommand extends Command
 	{
 		try
 		{
-			Console.instance().getFront().clearCLIOut();
+			Console.clear();
 		}
 		catch(NullPointerException npe)
 		{

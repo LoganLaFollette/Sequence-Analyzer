@@ -1,5 +1,7 @@
 package gui.commands;
 
+import gui.Console;
+
 public class ExitCommand extends Command
 {
 	@Override
@@ -11,6 +13,7 @@ public class ExitCommand extends Command
 	@Override
 	public int execute(String[] args)
 	{
+		Console.println("Exitting!");
 		System.exit(0);
 		return 0;
 	}

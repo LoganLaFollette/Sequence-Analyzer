@@ -12,7 +12,7 @@ public final class Console
 	/* Static Vars */
 	
 	// The singleton Console instance
-	private static Console _instance;
+	private static Console inst;
 	
 	// The list of all invokable commands
 	private static HashMap<String, Command> commandList;
@@ -43,9 +43,35 @@ public final class Console
 	 */
 	public static Console instance()
 	{
-		if(_instance == null)
-			_instance = new Console();
-		return _instance;
+		if(inst == null)
+			inst = new Console();
+		return inst;
+	}
+	
+	/**
+	 * Print to the current Console instance's output
+	 * @param s - the text to print
+	 */
+	public static void print(String s)
+	{
+		instance().front.printToOut(s);
+	}
+	
+	/**
+	 * Print to the current Console instance's output, appending a newline
+	 * @param s - the text to print
+	 */
+	public static void println(String s)
+	{
+		instance().front.printlnToOut(s);
+	}
+	
+	/**
+	 * Remove all text from the current Console's output
+	 */
+	public static void clear()
+	{
+		instance().front.clearOut();
 	}
 	
 	
@@ -123,9 +149,5 @@ public final class Console
 	public void setFront(MainWindow front)
 	{
 		this.front = front;
-	}
-	public MainWindow getFront()
-	{
-		return front;
 	}
 }

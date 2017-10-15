@@ -592,10 +592,23 @@ public class MainWindow
 	}
 	
 	/**
+	 * Print some text to the output pane, appending to the existing content
+	 * @param output - The text to append to the output pane
+	 */
+	public void printToOut(String output)
+	{
+		outputArea.setText(outputArea.getText() + output);
+	}
+	public void printlnToOut(String output)
+	{
+		printToOut(output + "\n");
+	}
+	
+	/**
 	 * Get the text in the output window
 	 * @return A reference to the String that represents the output window
 	 */
-	public void clearCLIOut()
+	public void clearOut()
 	{
 		outputArea.setText("");
 	}

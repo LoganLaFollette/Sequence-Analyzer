@@ -1,5 +1,6 @@
 package gui.commands;
 
+import gui.Console;
 import gui.MainWindow;
 
 public class DebugCommand extends Command
@@ -14,7 +15,7 @@ public class DebugCommand extends Command
 	public int execute(String[] args)
 	{
 		MainWindow.DEBUG = !MainWindow.DEBUG;
-		// print "Debug Mode is now " + (MainWindow.DEBUG ? "on" : "off") + ".";
+		Console.println("Debug Mode is now " + (MainWindow.DEBUG ? "on" : "off") + ".");
 		return 0;
 	}
 
