@@ -35,6 +35,7 @@ import javax.swing.event.CaretListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.JTextComponent;
+import javax.swing.event.AncestorListener;
 import javax.swing.event.CaretEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -48,6 +49,8 @@ import javax.swing.JCheckBox;
 import javax.swing.JEditorPane;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
+
+import grammar.AntlrBridge;
 
 public class MainWindow
 {
@@ -588,6 +591,8 @@ public class MainWindow
 		if(!Console.instance().processInput(inputLine.getText()))
 		{
 			outputArea.setText(outputArea.getText() + inputLine.getText() + "\n");
+			
+			AntlrBridge a = new AntlrBridge(inputLine.getText());
 		}
 		
 		Console.instance().addToHistory(inputLine.getText());
