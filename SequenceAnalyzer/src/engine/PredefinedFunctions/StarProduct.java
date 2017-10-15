@@ -23,7 +23,7 @@ public class StarProduct
 {
     
 	
-	public static String starProduct(String star1, String star2)
+	public String starProduct(String star1, String star2)
 	{		
 		int counter = 0;
 		String strFinal = "";

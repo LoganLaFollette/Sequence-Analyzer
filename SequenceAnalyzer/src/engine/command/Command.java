@@ -5,11 +5,12 @@ package engine.command;
  * @author 
  *
  */
-public abstract class Command 
+public abstract class Command<T>
 {
 	/**
 	 * Individually defined by all subclasses of Command
 	 */
-  abstract public void execute();
-  
+	abstract public CommandResponse execute(CommandExpression cmd);
+	
+	
 }
