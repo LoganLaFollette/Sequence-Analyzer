@@ -1,17 +1,27 @@
 package engine.command.vardef;
 
-import engine.command.Command;
+import engine.command.ExpressionCmd;
 
-public class AlphabetDef extends Command {
+/**
+ * 
+ * @author Logan LaFollette
+ *
+ */
+public class AlphabetDef extends VarDef {
 
 	public AlphabetDef() {
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	@Override
 	public void execute() {
-		// TODO Auto-generated method stub
 		
+		
+	}
+
+	@Override
+	public void execute(ExpressionCmd exp) {
+		// TODO Auto-generated method stub
 	}
 
 }

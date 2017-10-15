@@ -1,20 +1,26 @@
 package engine.command.stringcommand;
 
-import engine.command.Command;
+import engine.command.ExpressionCmd;
 
 /**
  * 
  * @author Logan LaFollette
  *
  */
-public class StrSub extends Command {
+public class StrSub extends StrCmd {
 
 	public StrSub() {
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	@Override
 	public void execute() {
+		
+		
+	}
+
+	@Override
+	public void execute(ExpressionCmd exp) {
 		// TODO Auto-generated method stub
 		
 	}

@@ -1,22 +1,27 @@
 package engine.command.stringcommand;
 
-import engine.command.Command;
+import engine.command.ExpressionCmd;
 
 /**
  * 
  * @author Logan LaFollette
  *
  */
-public class StrCompare extends Command {
+public class StrCompare extends StrCmd {
 
 	public StrCompare() {
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	@Override
 	public void execute() {
-		// TODO Auto-generated method stub
 		
+		
+	}
+
+	@Override
+	public void execute(ExpressionCmd exp) {
+		// TODO Auto-generated method stub
 	}
 
 }
