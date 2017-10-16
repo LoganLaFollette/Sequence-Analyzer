@@ -92,14 +92,14 @@ public final class Console
 	 * @param input - the input string
 	 * @return A boolean indicating whether a command was run
 	 */
-	public boolean processInput(String input)
+	public int processInput(String input)
 	{
 		if(!input.startsWith(COMMAND_FLAG))
-			return false;
+			return -1;
 		
 		String[] args = input.substring(1).split(" ");
 		
-		int success = 2;
+		int success = 1;
 		
 		if(commandList.containsKey(args[0]))
 		{
@@ -113,7 +113,7 @@ public final class Console
 			}
 		}
 		
-		return success == 0;
+		return success;
 	}
 	
 	/**

@@ -588,7 +588,7 @@ public class MainWindow
 	//TODO remove debug
 	private void sendInToOut()
 	{
-		if(!Console.instance().processInput(inputLine.getText()))
+		if(Console.instance().processInput(inputLine.getText()) == -1)
 		{
 			outputArea.setText(outputArea.getText() + "~ " + inputLine.getText() + "\n");
 			
