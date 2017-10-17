@@ -7,6 +7,6 @@
 	<classpathentry kind="lib" path="extdeps/jgoodies-forms-1.8.0-sources.jar"/>
 	<classpathentry kind="lib" path="extdeps/jgoodies-forms-1.8.0.jar"/>
 	<classpathentry kind="lib" path="extdeps/miglayout15-swing.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Dylan/Documents/BradleySchoolWork/CS490/antlr-4.7-complete.jar"/>
+	<classpathentry kind="lib" path="extdeps/antlr-4.7-complete.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
