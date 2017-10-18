@@ -6,7 +6,7 @@ import engine.command.CommandResponse;
 
 /**
  * 
- * @author Logan LaFollette
+ * 
  *
  */
 public class StrCmd extends Command {
