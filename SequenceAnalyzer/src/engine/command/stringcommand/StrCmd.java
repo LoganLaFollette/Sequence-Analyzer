@@ -1,21 +1,25 @@
 package engine.command.stringcommand;
 
 import engine.command.Command;
+import engine.command.CommandExpression;
+import engine.command.CommandResponse;
 
 /**
  * 
  * @author Logan LaFollette
  *
  */
-public abstract class StrCmd extends Command {
+public class StrCmd extends Command {
 	
-	@Override
-	public void execute() {
-		
-		
-	}
 	
 	public StrCmd() {
 		
 	}
+
+	@Override
+	public CommandResponse execute(CommandExpression cmd) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 }

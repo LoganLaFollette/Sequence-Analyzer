@@ -1,6 +1,7 @@
 package engine.command.vardef;
 
-import engine.command.ExpressionCmd;
+import engine.command.CommandExpression;
+import engine.command.CommandResponse;
 
 /**
  * 
@@ -14,14 +15,9 @@ public class AlphabetDef extends VarDef {
 	}
 
 	@Override
-	public void execute() {
-		
-		
-	}
-
-	@Override
-	public void execute(ExpressionCmd exp) {
+	public CommandResponse execute(CommandExpression cmd) {
 		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
