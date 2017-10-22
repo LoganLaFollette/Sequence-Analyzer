@@ -1,11 +1,12 @@
+package grammar;
 //Command Objects to be passed to the Engine
 
 //COMMAND HIERARCHY LEVEL 0
-public class Command{										
+public class CommandObject{										
 	public String commandType;
 	public List<Command> commandList;
 	
-	public Command(){//default constructor
+	public CommandObject(){//default constructor
 		commandType = "";
 		commandList = new List<Command>();
 	}
@@ -14,20 +15,20 @@ public class Command{
 
 //COMMAND HIERARCHY LEVEL 1
 
-public class VarDefCommand extends Command{					
+public class VarDefCommand extends CommandObject{					
 	public VarDefCommand (){//default constructor
 		commandType = "";
 	}
 }
 
-public class StringCommand extends Command{					
+public class StringCommand extends CommandObject{					
 	public StringCommand (){//default constructor
 		commandType = "";
 	}
 	
 }
 
-public class PredefinedFunctionCommand extends Command{		
+public class PredefinedFunctionCommand extends CommandObject{		
 	public PredefinedFunctionCommand (){//default constructor
 		commandType = "";
 	}

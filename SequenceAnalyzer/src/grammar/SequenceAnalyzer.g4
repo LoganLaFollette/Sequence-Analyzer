@@ -117,7 +117,9 @@ expr	:   expr op=('*'|'/') expr # MulDiv  	//multiplication or division of expre
 		|   expr op=('+'|'-') expr # AddSub  	//addition or subtraction of expressions
 		/*|	USER_ALPHA			   # UserAlpha*///for later implementation of user defined alphabet
 		|	ID					   # id			//expression as single ID
-		|   INT                    # int        //expression as single Int  
+		|   INT                    # int        //expression as single Int 
+		| 	expr				   # expr
+		|	cmd					   # command
 		|   '(' expr ')'           # parens		//expression within parenthesis
 		;
 
